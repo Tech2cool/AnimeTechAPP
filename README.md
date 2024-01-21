@@ -40,10 +40,6 @@ yarn add
 # to start application with metro terminal (recommended)
 yarn start
 ```
-
-### Demo Video
-![AnimeTech Video Demo](./readme-images/demo.mp4 "Video Demo")
-
 ### Demo Screeshots
 ### Home 
 ![AnimeTech Android Demo](./readme-images/home.jpg "Home")
