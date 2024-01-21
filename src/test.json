@@ -1,0 +1,667 @@
+[
+  {
+    "epId": "322987",
+    "epNum": 37,
+    "season": 1,
+    "thumbnail": "",
+    "createdAt": "2021-12-14T13:06:43.113Z",
+    "title": {
+      "english": null,
+      "english_jp": null,
+      "japanese": null
+    },
+    "description": null
+  },
+  {
+    "list": [
+      {
+        "animeID": "akuyaku-reijou-level-99-watashi-wa-ura-boss-desu-ga-maou-dewa-arimasen",
+        "animeTitle": {
+          "english": "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord",
+          "english_jp": "Akuyaku Reijou Level 99: Watashi wa Ura Boss desu ga Maou de wa Arimasen",
+          "japanese": "悪役令嬢レベル99 ～私は裏ボスですが魔王ではありません～"
+        },
+        "animeImg": "https://gogocdn.net/cover/akuyaku-reijou-level-99-watashi-wa-ura-boss-desu-ga-maou-dewa-arimasen-1704167871.png",
+        "year": 2024,
+        "providerId": "gogoanime",
+        "AdditionalInfo": {
+          "english": "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord",
+          "english_jp": "Akuyaku Reijou Level 99: Watashi wa Ura Boss desu ga Maou de wa Arimasen",
+          "japanese": "悪役令嬢レベル99 ～私は裏ボスですが魔王ではありません～",
+          "id": "47237",
+          "type": "anime",
+          "links": {
+            "self": "https://kitsu.io/api/edge/anime/47237"
+          },
+          "slug": "akuyaku-reijou-level-99-watashi-wa-ura-boss-desu-ga-maou-de-wa-arimasen",
+          "synopsis": "Yumiella Dolkness is your run-of-the-mill villainess in an otome RPG—except for the fact that she’s also secretly the overpowered hidden boss. But Yumiella wasn’t always Yumiella, you see. In her past life, she was nothing more than an introverted college student and devout gamer. So when she realizes that she’s been reincarnated as a hidden boss, she’s determined to steer clear of the protagonists and avoid her demise at their hands. All she wants is a nice, quiet life. Too bad when her gamer instincts kick in, Yumiella can’t just ignore her awesome stats... A girl’s gotta grind! So, with plenty of time on her hands before starting life at the academy, she gets a little carried away and maxes out her level at 99. And when everyone else finds out, they get the wrong idea about her power—now they think she’s the Demon Lord! Is this OP villainess strong enough to win back the peaceful life she always wanted?!\n\n(Source: J-Novel Club)",
+          "description": "Yumiella Dolkness is your run-of-the-mill villainess in an otome RPG—except for the fact that she’s also secretly the overpowered hidden boss. But Yumiella wasn’t always Yumiella, you see. In her past life, she was nothing more than an introverted college student and devout gamer. So when she realizes that she’s been reincarnated as a hidden boss, she’s determined to steer clear of the protagonists and avoid her demise at their hands. All she wants is a nice, quiet life. Too bad when her gamer instincts kick in, Yumiella can’t just ignore her awesome stats... A girl’s gotta grind! So, with plenty of time on her hands before starting life at the academy, she gets a little carried away and maxes out her level at 99. And when everyone else finds out, they get the wrong idea about her power—now they think she’s the Demon Lord! Is this OP villainess strong enough to win back the peaceful life she always wanted?!\n\n(Source: J-Novel Club)",
+          "titles": {
+            "en": "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord",
+            "en_jp": "Akuyaku Reijou Level 99: Watashi wa Ura Boss desu ga Maou de wa Arimasen",
+            "ja_jp": "悪役令嬢レベル99 ～私は裏ボスですが魔王ではありません～",
+            "th_th": "ชีวิตไม่ง่ายของนางร้าย LV99"
+          },
+          "canonicalTitle": "Akuyaku Reijou Level 99: Watashi wa Ura Boss desu ga Maou de wa Arimasen",
+          "abbreviatedTitles": null,
+          "ratingFrequencies": {
+            "2": "2",
+            "3": "0",
+            "4": "0",
+            "5": "0",
+            "6": "1",
+            "7": "0",
+            "8": "2",
+            "9": "0",
+            "10": "2",
+            "11": "2",
+            "12": "6",
+            "13": "2",
+            "14": "16",
+            "15": "0",
+            "16": "4",
+            "17": "2",
+            "18": "3",
+            "19": "1",
+            "20": "10"
+          },
+          "startDate": "2024-01-09",
+          "nextRelease": null,
+          "popularityRank": 6356,
+          "ratingRank": 2422,
+          "ageRating": "PG",
+          "ageRatingGuide": "Teens 13 or Older",
+          "subtype": "TV",
+          "status": "current",
+          "posterImage": {
+            "tiny": "https://media.kitsu.io/anime/47237/poster_image/tiny-e937852e814ac1947997a6c4c8eda57e.jpeg",
+            "large": "https://media.kitsu.io/anime/47237/poster_image/large-de3f8c29dbe373ffee64b578cb9d41ad.jpeg",
+            "small": "https://media.kitsu.io/anime/47237/poster_image/small-9f8bafda85979d6f857c783798bd5f96.jpeg",
+            "medium": "https://media.kitsu.io/anime/47237/poster_image/medium-28d7ea4b5929ba6c846769e500621f96.jpeg",
+            "original": "https://media.kitsu.io/anime/47237/poster_image/b6c0a2aacf5b91c7dfa39136fa6436c2.png",
+            "meta": {
+              "dimensions": {
+                "tiny": {
+                  "width": 110,
+                  "height": 156
+                },
+                "large": {
+                  "width": 550,
+                  "height": 780
+                },
+                "small": {
+                  "width": 284,
+                  "height": 402
+                },
+                "medium": {
+                  "width": 390,
+                  "height": 554
+                }
+              }
+            }
+          },
+          "coverImage": null,
+          "episodeCount": 12,
+          "episodeLength": 24,
+          "totalLength": 168,
+          "showType": "TV",
+          "nsfw": false,
+          "relationships": {
+            "genres": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/genres",
+                "related": "https://kitsu.io/api/edge/anime/47237/genres"
+              }
+            },
+            "categories": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/categories",
+                "related": "https://kitsu.io/api/edge/anime/47237/categories"
+              }
+            },
+            "castings": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/castings",
+                "related": "https://kitsu.io/api/edge/anime/47237/castings"
+              }
+            },
+            "installments": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/installments",
+                "related": "https://kitsu.io/api/edge/anime/47237/installments"
+              }
+            },
+            "mappings": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/mappings",
+                "related": "https://kitsu.io/api/edge/anime/47237/mappings"
+              }
+            },
+            "reviews": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/reviews",
+                "related": "https://kitsu.io/api/edge/anime/47237/reviews"
+              }
+            },
+            "mediaRelationships": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/media-relationships",
+                "related": "https://kitsu.io/api/edge/anime/47237/media-relationships"
+              }
+            },
+            "characters": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/characters",
+                "related": "https://kitsu.io/api/edge/anime/47237/characters"
+              }
+            },
+            "staff": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/staff",
+                "related": "https://kitsu.io/api/edge/anime/47237/staff"
+              }
+            },
+            "productions": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/productions",
+                "related": "https://kitsu.io/api/edge/anime/47237/productions"
+              }
+            },
+            "quotes": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/quotes",
+                "related": "https://kitsu.io/api/edge/anime/47237/quotes"
+              }
+            },
+            "episodes": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/episodes",
+                "related": "https://kitsu.io/api/edge/anime/47237/episodes"
+              }
+            },
+            "streamingLinks": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/streaming-links",
+                "related": "https://kitsu.io/api/edge/anime/47237/streaming-links"
+              }
+            },
+            "animeProductions": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/anime-productions",
+                "related": "https://kitsu.io/api/edge/anime/47237/anime-productions"
+              }
+            },
+            "animeCharacters": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/anime-characters",
+                "related": "https://kitsu.io/api/edge/anime/47237/anime-characters"
+              }
+            },
+            "animeStaff": {
+              "links": {
+                "self": "https://kitsu.io/api/edge/anime/47237/relationships/anime-staff",
+                "related": "https://kitsu.io/api/edge/anime/47237/anime-staff"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "totalPages": 1
+  },
+  [
+    {
+      "description": "The third princess of the Kingdom of Liones, Elizabeth, finds Meliodas, who is the owner of the Boar Hat bar and is also 
+  one of the Seven Deadly Sins. With her identity exposed, she is pursued by Twigo whom Meliodas quickly defeats. The princess joins him on his journey to find the other Deadly Sins in order to defeat the Holy Knights, who have orchestrated a coup d'état and have overthrown the king.", "hasDub": false, "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-1", "isFiller": false, "k_epId": "149076", "number": 1, "season": 1, "thumbnail": "https: //media.kitsu.io/episodes/thumbnails/149076/original.jpg", "title": {"english": "The Seven Deadly Sins", "english_jp": "Nanatsu no Taizai", "japanese": "七つの大罪"}}, {"description": "Gilthunder, thus preventing the village from making the Bernia ale, which was their prime source of income. After innumerable unsuccessful attempts of the villagers to remove the sword with which the source was blocked, Meliodas easily removes the object. A celebration is held at the Boar Hat, and Meliodas was hailed as a savior by Bernia's villagers. Gilthunder, wanting to confirm whether the removal of his sword was an accident, threw a spear imbued with his power toward the town. Meliodas, however, easily stops and throws the spear back, destroying Fort Solgales.", "hasDub": false, "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-2", "isFiller": false, 
+      "k_epId": "149077",
+      "number": 2,
+      "season": 1,
+      "thumbnail": "https://media.kitsu.io/episodes/thumbnails/149077/original.jpg",
+      "title": {
+        "english": "Sword of The Holy Knight",
+        "english_jp": "Seikishi no Ken",
+        "japanese": "聖騎士の剣"
+      }
+    },
+    {
+      "description": "Meliodas, Hawk and Elizabeth travel to the Forest of White Dreams that even Holy Knights avoid. There, the Prankster Imps that inhabit the Forest of White Dreams attempt to confuse them by impersonating Hawk and Elizabeth in order to lead them away. After defeating them, they follow them and find the Serpent's Sin of Envy, Diane sleeping in the forest. Gilthunder suddenly arrives and binds all of them with his lightning magic. Meliodas battles Gilthunder, purposely allows the Holy Knight to slash him, and under the pretense of dying due to the grave wound, acquires information about the whereabouts of two members of the Seven Deadly Sins, King and Ban, as his apparent last wish.",
+      "hasDub": false,
+      "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-3",
+      "isFiller": false,
+      "k_epId": "149078",
+      "number": 3,
+      "season": 1,
+      "thumbnail": "https://media.kitsu.io/episodes/thumbnails/149078/original.jpg",
+      "title": {
+        "english": "The Sin of the Sleeping Forest",
+        "english_jp": "Nemureru Mori no Tsumi",
+        "japanese": "眠れる森の罪"
+      }
+    },
+    {
+      "description": "Having discovered the whereabouts of Ban and King, Diane throws Gilthunder out of the forest, and Meliodas, Hawk and Elizabeth, now joined by Diane, head toward the Baste Dungeon, where Ban is imprisoned. They later arrive at Dalmary Town where Meliodas is treated by Dana. Diane and Elizabeth begin to argue and discuss about the aspects in which they envy each other. They are suddenly attacked by the Holy Knight Friesia, who tries to destroy the entire town along with the Deadly Sins, but Diane quickly destroys all of her insects. Concurrently, Ban escapes from his cell in the Baste Dungeon, and is stopped by Jericho, who tries to subdue him. Dana unexpectedly reveals that the medicine Meliodas drank was a deadly poison as Golgius appears out of the blue. ",
+      "hasDub": false,
+      "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-4",
+      "isFiller": false,
+      "k_epId": "149079",
+      "number": 4,
+      "season": 1,
+      "thumbnail": "https://media.kitsu.io/episodes/thumbnails/149079/original.jpg",
+      "title": {
+        "english": "A Young Girl's Dream",
+        "english_jp": "Shoujo no Yume",
+        "japanese": "少女の夢"
+      }
+    },
+    {
+      "description": "Golgius appears and attempts to take Elizabeth and Meliodas' sword back to Liones. Whilst attempting to take the sword, Meliodas awakens, with no effect of the poison showing, proceeding to blast an aura that causes Golgius to make a hasty retreat. Meliodas and Elizabeth set off to Baste Dungeon afterwards, however, they are stopped by 
+  a confused Diane, who after hearing the sound of a bell, attacks the group. They try to run away from the berserk Diane, involving a pair of shepherds along the way, however Meliodas soon succumbs to the same bell, and begins to fight Diane. Meanwhile in Baste Dungeon, Ban is shown wandering around after having dealt with Jericho. It is not long before he is found by Jude of the Weird Fangs, who promptly stabs Ban in the chest. ", "hasDub": false,"id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-5","isFiller": false,"k_epId": "149080","number": 5,
+      "season": 1,
+      "thumbnail": "https://media.kitsu.io/episodes/thumbnails/149080/original.jpg",
+      "title": {
+        "english": "Even If You Were To Die",
+        "english_jp": "Tatoe Anata ga Shindemo",
+        "japanese": "たとえあなたが死んでも"
+      }
+    },
+    {
+      "description": "Meliodas and Diane are still fighting each other; Elizabeth shouts 
+  for them to snap out of it, and for a few moments they do, until the sound of the bell once again spurs them to fight each other again. The Holy 
+  Knight Friesia comes in, threatening the life of the shepherds, however Elizabeth steps in to protect one of them, heavily injuring herself in the process. It is then revealed that one of the young shepherds is actually Ruin, and that he has been fooling them all this time. As Elizabeth gets beaten up by Ruin, she manages to knock off the bell that is causing the hallucinations; Ruin goes to punish Elizabeth further for doing so, but Meliodas quickly comes to her aid, thus beginning Meliodas' battle with Ruin, whilst Diane faces off against Friesia. Both defeat their respective opponents, and the team continues their trek to Baste Dungeon. Elsewhere, despite having been pierced in the chest, Ban is able to overpower Jude, and takes him out. Meliodas and co. finally enter Baste Dungeon, although it is all a trap as Golgius locks them in with the Eternal Seal 
+  Spell. However, the reunion between Ban and Meliodas caused so much destruction that it completely destroyed the structure and disregarded the spell. Later that evening, the gang enjoys a meal courtesy of Dana, but an omen in the sky foretells of great disaster to befall Britannia soon. In Liones, it is revealed that King is alive and well, but he is working with Gilthunder. ", "hasDub": false, "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-6", "isFiller": false, "k_epId": "149081", "number": 6, "season": 1, "thumbnail": "https: //media.kitsu.io/episodes/thumbnails/149081/original.jpg", "title": {"english": "Ballad of the Beginning", "english_jp": "Hajimari no Uta", "japanese": "はじまりの詩"}}, {"description": "Meliodas picks the ggroup's next destination to be the rumored location of the King, the Capital of the Dead.", "hasDub": false, "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-7", "isFiller": false, "k_epId": "149082", "number": 7, "season": 1, "thumbnail": "https://media.kitsu.io/episodes/thumbnails/149082/original.jpg", "title": {"english": "Touching Reunion", "english_jp": "Kandou no Saikai", "japanese": "感動の 
+  再会"}}, {"description": "King has a final confrontation with Ban, finishing him off with Ban being frozen, with Elaine making an appearance, never showing herself to King. A holy knight Guila battles it out against Meliodas, Diane and Elizabeth. Ban continues his flashbacks with Elaine and the Fairy forest, at the foutain of youth.", "hasDub": false, "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-8", "isFiller": false, "k_epId": "149083", "number": 8, "season": 1, "thumbnail": "https: //media.kitsu.io/episodes/thumbnails/149083/original.jpg", "title": {"english": 
+      "Dreadful Pursuer",
+      "english_jp": "Osorubeki Tsuiseki-sha",
+      "japanese": "恐るべき追跡者"
+    }
+  },
+  {
+    "description": "The battle with the King comes to a 
+  close as he overpowers Guila with Chastiefol. Their time in the Capital of the Dead now over, Ban and Elaine have one more close moment, before being bid a farewell by Ellen and Luigi, who are revealed to have been ghosts this entire time...", "hasDub": false, "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-9", "isFiller": false, "k_epId": "149084", "number": 9, "season": 1, "thumbnail": "https: //media.kitsu.io/episodes/thumbnails/149084/original.jpg", "title": {"english": "Dark Pulse", "english_jp": "Ankoku no Myakudou", "japanese": "暗黒の脈動"}}, {"description": "The Byzel fighting festival commences! After the initial brawl only leaves 8 people standing. The three first rounds unravel with some interesting displays of power and a few surprises.", "hasDub": false, "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-10", "isFiller": false, "k_epId": "149085", "number": 10, "season": 1, "thumbnail": "https://media.kitsu.io/episodes/thumbnails/149085/original.jpg", "title": {"english": 
+    "Byzel Fight Festival",
+    "english_jp": "Byzel Kenka Matsuri",
+    "japanese": "バイゼル喧嘩祭り"
+  }
+},
+{
+  "description": "It's Meriodas vs. Ban in a a fight that shakes the ground beneath their feet. The semifinal rounds end up with the sins gaining one new friend and remembering an old one. Everything is ready for the final match while a storm starts brewing in the horizon. ",
+  "hasDub": false,
+  "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-11",
+  "isFiller": false,
+  "k_epId": "149086",
+  "number": 11,
+  "season": 1,
+  "thumbnail": "https://media.kitsu.io/episodes/thumbnails/149086/original.jpg",
+  "title": {
+    "english": "Sentiment of Many Years",
+    "english_jp": "Sekinen no Omoi",
+    "japanese": "積年の想い"
+  }
+},
+{
+  "description": "The 
+  final round draws to a close. The Holy Knights descend upon the sins giving them some new powers and improved equipment. The Deadly Sins are pushed against the ropes.", "hasDub": false, "id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-12", "isFiller": false, "k_epId": "149087", "number": 12, "season": 1, "thumbnail": "https: //media.kitsu.io/episodes/thumbnails/149087/original.jpg", "title": {"english": "Terrifying Cannon", 
+  "english_jp": "Senritsu no Cannon",
+  "japanese": "戦慄のカノン"
+}
+},
+{
+"description": "Meliodas is freed and the power of the Captain sin makes its debut. Possessed by a strange darkness, Meliodas assaults both enemies and allies until he clashes against Hellbram, the two of them fight mercilessly.",
+"hasDub": false,
+"id": "nanatsu-no-taizai-mokushiroku-no-yonkishi-episode-13",
+"isFiller": false,
+"k_epId": "149088",
+"number": 13,
+"season": 1,
+"thumbnail": "https://media.kitsu.io/episodes/thumbnails/149088/original.jpg",
+"title": {
+  "english": "Disciple of Destruction",
+  "english_jp": "Hakai no Shito",
+  "japanese": "破壊の使徒"
+}
+}
+],
+{
+"totalPages": "",
+"Title": {
+"english": "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord",
+"english_jp": "Akuyaku Reijou Level 99: Watashi wa Ura Boss desu ga Maou de wa Arimasen",
+"japanese": "悪役令嬢レベル99 ～私は裏ボスですが魔王ではありません～"
+},
+"type": "Winter 2023 Anime",
+"releasedDate": "2024",
+"status": "Ongoing",
+"genres": [
+"Fantasy",
+"Isekai",
+"Reincarnation"
+],
+"otherName": "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord,  悪役令嬢レベル99 ～私は裏ボスですが魔王ではありません～ ",
+"synopsis": "A certain otome RPG takes place in the Varschein Kingdom, where dark hair is stigmatized to an abnormal degree. Eumiella Dolkness is the daughter of a count, hated from birth due to her pitch-black locks—and she is also the hidden boss! In a twist of fate, at five years of age, Eumiella recalls memories of her past life in Japan. Uninterested in the romance aspect of the original game, she begins to dedicate herself to training her rare dark-type magic.\n\nDespite this, Eumiella's goals are clear: avoid becoming the hidden boss and stay out of the limelight. Upon entering the magic academy, however, she shakes the foundation of the kingdom when her level 99 status comes to light. Whether a physical brawl or magic duel, her abilities are unmatched, and coupled with her black hair, she sticks out like a sore thumb. To make matters worse, the original heroine begins suspecting she is the demon lord! Can the deadpan noble girl achieve her wish of a peaceful life?",
+"animeImage": "https://gogocdn.net/cover/akuyaku-reijou-level-99-watashi-wa-ura-boss-desu-ga-maou-dewa-arimasen-1704167871.png",
+"totalEpisodes": "2",
+"AdditionalInfo": {
+"english": "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord",
+"english_jp": "Akuyaku Reijou Level 99: Watashi wa Ura Boss desu ga Maou de wa Arimasen",
+"japanese": "悪役令嬢レベル99 ～私は裏ボスですが魔王ではありません～",
+"id": "47237",
+"type": "anime",
+"links": {
+  "self": "https://kitsu.io/api/edge/anime/47237"
+},
+"slug": "akuyaku-reijou-level-99-watashi-wa-ura-boss-desu-ga-maou-de-wa-arimasen",
+"synopsis": "Yumiella Dolkness is your run-of-the-mill villainess in an otome RPG—except for the fact that she’s also secretly the overpowered hidden boss. But Yumiella wasn’t always Yumiella, you see. In her past life, she was nothing more than an introverted college student and devout gamer. So when she realizes that she’s been reincarnated as a hidden boss, she’s determined to steer clear of the protagonists and avoid her demise at their hands. All she wants is a nice, quiet life. Too bad when her gamer instincts kick in, Yumiella can’t just ignore her awesome stats... A girl’s gotta grind! So, with plenty of time on her hands before starting life at the academy, she gets a little carried away and maxes out her level at 99. And when everyone else finds out, they get the wrong idea about her power—now they think she’s the Demon Lord! Is this OP villainess strong enough to win back the peaceful life she always wanted?!\n\n(Source: J-Novel Club)",
+"description": "Yumiella Dolkness is your run-of-the-mill villainess in an otome RPG—except for the fact that she’s also secretly the overpowered hidden boss. But Yumiella wasn’t always Yumiella, you see. In her past life, she was nothing more than an introverted college student and devout gamer. So when she realizes that she’s been reincarnated as a hidden boss, she’s determined to steer clear of the protagonists and avoid her demise at their hands. All she wants is a nice, quiet life. Too bad when her gamer instincts kick in, Yumiella can’t just ignore her awesome stats... A girl’s gotta grind! So, with plenty of time on her hands before starting life at the academy, she gets a little carried away and maxes out her level at 99. And when everyone else finds out, they get the wrong idea about her power—now they think she’s the Demon Lord! Is this OP villainess strong enough to win back the peaceful life she always wanted?!\n\n(Source: J-Novel Club)",
+"titles": {
+  "en": "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord",
+  "en_jp": "Akuyaku Reijou Level 99: Watashi wa Ura Boss desu ga Maou de wa Arimasen",
+  "ja_jp": "悪役令嬢レベル99 ～私は裏ボスですが魔王ではありません～",
+  "th_th": "ชีวิตไม่ง่ายของนางร้าย LV99"
+},
+"canonicalTitle": "Akuyaku Reijou Level 99: Watashi wa Ura Boss desu ga Maou de wa Arimasen",
+"abbreviatedTitles": null,
+"ratingFrequencies": {
+  "2": "1",
+  "3": "0",
+  "4": "0",
+  "5": "0",
+  "6": "1",
+  "7": "0",
+  "8": "2",
+  "9": "0",
+  "10": "2",
+  "11": "2",
+  "12": "6",
+  "13": "3",
+  "14": "16",
+  "15": "1",
+  "16": "4",
+  "17": "2",
+  "18": "3",
+  "19": "1",
+  "20": "13"
+},
+"startDate": "2024-01-09",
+"nextRelease": null,
+"popularityRank": 6155,
+"ratingRank": 1920,
+"ageRating": "PG",
+"ageRatingGuide": "Teens 13 or Older",
+"subtype": "TV",
+"status": "current",
+"posterImage": {
+  "tiny": "https://media.kitsu.io/anime/47237/poster_image/tiny-e937852e814ac1947997a6c4c8eda57e.jpeg",
+  "large": "https://media.kitsu.io/anime/47237/poster_image/large-de3f8c29dbe373ffee64b578cb9d41ad.jpeg",
+  "small": "https://media.kitsu.io/anime/47237/poster_image/small-9f8bafda85979d6f857c783798bd5f96.jpeg",
+  "medium": "https://media.kitsu.io/anime/47237/poster_image/medium-28d7ea4b5929ba6c846769e500621f96.jpeg",
+  "original": "https://media.kitsu.io/anime/47237/poster_image/b6c0a2aacf5b91c7dfa39136fa6436c2.png",
+  "meta": {
+    "dimensions": {
+      "tiny": {
+        "width": 110,
+        "height": 156
+      },
+      "large": {
+        "width": 550,
+        "height": 780
+      },
+      "small": {
+        "width": 284,
+        "height": 402
+      },
+      "medium": {
+        "width": 390,
+        "height": 554
+      }
+    }
+  }
+},
+"coverImage": null,
+"episodeCount": 12,
+"episodeLength": 24,
+"totalLength": 168,
+"showType": "TV",
+"nsfw": false,
+"relationships": {
+  "genres": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/genres",
+      "related": "https://kitsu.io/api/edge/anime/47237/genres"
+    }
+  },
+  "categories": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/categories",
+      "related": "https://kitsu.io/api/edge/anime/47237/categories"
+    }
+  },
+  "castings": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/castings",
+      "related": "https://kitsu.io/api/edge/anime/47237/castings"
+    }
+  },
+  "installments": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/installments",
+      "related": "https://kitsu.io/api/edge/anime/47237/installments"
+    }
+  },
+  "mappings": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/mappings",
+      "related": "https://kitsu.io/api/edge/anime/47237/mappings"
+    }
+  },
+  "reviews": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/reviews",
+      "related": "https://kitsu.io/api/edge/anime/47237/reviews"
+    }
+  },
+  "mediaRelationships": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/media-relationships",
+      "related": "https://kitsu.io/api/edge/anime/47237/media-relationships"
+    }
+  },
+  "characters": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/characters",
+      "related": "https://kitsu.io/api/edge/anime/47237/characters"
+    }
+  },
+  "staff": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/staff",
+      "related": "https://kitsu.io/api/edge/anime/47237/staff"
+    }
+  },
+  "productions": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/productions",
+      "related": "https://kitsu.io/api/edge/anime/47237/productions"
+    }
+  },
+  "quotes": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/quotes",
+      "related": "https://kitsu.io/api/edge/anime/47237/quotes"
+    }
+  },
+  "episodes": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/episodes",
+      "related": "https://kitsu.io/api/edge/anime/47237/episodes"
+    }
+  },
+  "streamingLinks": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/streaming-links",
+      "related": "https://kitsu.io/api/edge/anime/47237/streaming-links"
+    }
+  },
+  "animeProductions": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/anime-productions",
+      "related": "https://kitsu.io/api/edge/anime/47237/anime-productions"
+    }
+  },
+  "animeCharacters": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/anime-characters",
+      "related": "https://kitsu.io/api/edge/anime/47237/anime-characters"
+    }
+  },
+  "animeStaff": {
+    "links": {
+      "self": "https://kitsu.io/api/edge/anime/47237/relationships/anime-staff",
+      "related": "https://kitsu.io/api/edge/anime/47237/anime-staff"
+    }
+  }
+}
+}
+},
+]
+  
+  
+  
+  
+LOG  [
+{
+"mainId": "watchedList_ishura",
+"value": {
+"anime": [Object
+],
+"duration": 0,
+"episodeId": true,
+"watchedTime": 0,
+"watchingEpisode": true
+}
+},
+{
+"mainId": "watchedList_majo-to-yajuu",
+"value": {
+"anime": [Object
+],
+"duration": 1449.907,
+"episodeId": "majo-to-yajuu-episode-2",
+"watchedTime": 6.078,
+"watchingEpisode": "2"
+}
+},
+{
+"mainId": "watchedList_odekake-kozame-chiba-ken-kuro-ajillo",
+"value": {
+"anime": [Object
+],
+"duration": 0,
+"episodeId": true,
+"watchedTime": 0,
+"watchingEpisode": true
+}
+},
+{
+"mainId": "watchedList_one-punch-man",
+"value": {
+"anime": [Object
+],
+"duration": 1460.876,
+"episodeId": "one-punch-man-episode-2",
+"watchedTime": 0,
+"watchingEpisode": "2"
+}
+},
+{
+"mainId": "watchedList_one-punch-man-dub",
+"value": {
+"anime": [Object
+],
+"duration": 1461.168,
+"episodeId": "one-punch-man-dub-episode-11",
+"watchedTime": 386.645,
+"watchingEpisode": 11
+}
+},
+{
+"mainId": "watchedList_one-punch-man-road-to-hero",
+"value": {
+"anime": [Object
+],
+"duration": 1439.92,
+"episodeId": "one-punch-man-road-to-hero-episode-1",
+"watchedTime": 267.544,
+"watchingEpisode": 1
+}
+},
+{
+"mainId": "watchedList_one-punch-man-specials",
+"value": {
+"anime": [Object
+],
+"duration": 750,
+"episodeId": "one-punch-man-specials-episode-1",
+"watchedTime": 191,
+"watchingEpisode": 1
+}
+},
+{
+"mainId": "watchedList_tengen-toppa-gurren-lagann-ore-no-gurren-wa-pikka",
+"value": {
+"anime": [Object
+],
+"duration": 732.649,
+"episodeId": "tengen-toppa-gurren-lagann-ore-no-gurren-wa-pikka-pika-episode-1",
+"watchedTime": 3.32,
+"watchingEpisode": "1"
+}
+},
+{
+"mainId": "watchedList_youkoso-jitsuryoku-shijou-shugi-no-kyoushitsu-e-3rd-season",
+"value": {
+"anime": [Object
+],
+"duration": 1465.172,
+"episodeId": "youkoso-jitsuryoku-shijou-shugi-no-kyoushitsu-e-3rd-season-episode-3",
+"watchedTime": 336.34,
+"watchingEpisode": "3"
+}
+},
+{
+"mainId": "watchedList_youkoso-jitsuryoku-shijou-shugi-no-kyoushitsu-e-tv-3rd-season",
+"value": {
+"anime": [Object
+],
+"duration": 1420.044,
+"episodeId": "youkoso-jitsuryoku-shijou-shugi-no-kyoushitsu-e-3rd-season-episode-3",
+"watchedTime": 257.106,
+"watchingEpisode": "3"
+}
+},
+{
+"mainId": "watchedList_yuuki-bakuhatsu-bang-bravern",
+"value": {
+"anime": [Object
+],
+"duration": 1417.374,
+"episodeId": "yuuki-bakuhatsu-bang-bravern-episode-2",
+"watchedTime": 0,
+"watchingEpisode": "2"
+}
+}
+]
+
+LOG  [
+{
+  "mainId": "watchedList_ishura",
+    "value": {
+    "anime": [Object
+    ],
+    "duration": 1422.087,
+    "episodeId": "ishura-episode-3",
+    "wannaDelete": false,
+    "watchedTime": 2.265,
+    "watchingEpisode": "3"
+    }
+  }
+]
