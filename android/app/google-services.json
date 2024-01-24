@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "881846109613",
+    "project_id": "animetech-6a8d0",
+    "storage_bucket": "animetech-6a8d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881846109613:android:8ab8e2656ac151741d0d24",
+        "android_client_info": {
+          "package_name": "com.animetech"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwqVTPSFheY2N_UuW7JHtH7pAQf9Hg-KA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881846109613:android:2ae496ffa6776e5a1d0d24",
+        "android_client_info": {
+          "package_name": "com.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwqVTPSFheY2N_UuW7JHtH7pAQf9Hg-KA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

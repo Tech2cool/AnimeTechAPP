@@ -8,36 +8,23 @@ import VideoScreen from '../Screens/StackScreens/VideoScreen';
 import { LanguageProvider } from '../Context/LanguageContext';
 import AnimeInfoScreen from '../Screens/StackScreens/AnimeInfoScreen';
 import { useVideoPlayer } from '../Context/VideoPlayerContext';
-import Orientation from 'react-native-orientation-locker';
 import WatchListScreen from '../Screens/StackScreens/WatchListScreen';
+import GenreScreen from "../Screens/StackScreens/GenreScreen"
 import ThemeColors from '../Utils/ThemeColors';
+import MovieScreen from '../Screens/StackScreens/MovieScreen';
+import TopAiringScreen from '../Screens/StackScreens/TopAiringScreen';
+import Testing from '../Screens/StackScreens/Testing';
+import SetLinks from '../Screens/StackScreens/SetLinks';
+
 const Stack = createStackNavigator();
 const color = ThemeColors.DARK
 const AppNavigator = () => {
-  // const {videoState, setVideoState} = useVideoPlayer()
-
-  // function handleOrientationApp(orientation) {
-  //   if(!videoState.isFullscreen){
-  //       // setVideoState(s => ({...s, isFullscreen: false})),
-  //       StatusBar.setHidden(false),
-  //       navigation.setOptions({ tabBarStyle: { display: undefined }})
-  //       Orientation.unlockAllOrientations();
-  //   }
-  // }
-  // useEffect(() => {
-  //   Orientation.addOrientationListener(handleOrientationApp);
-
-  //   // Orientation.lockToLandscapeLeft();
-  //   return () => {
-  //     Orientation.removeOrientationListener(handleOrientationApp);
-  //   };
-  // }, []);
 
   return (
     <NavigationContainer>
       <View style={{backgroundColor:"black", flex:1}}>
       <StatusBar backgroundColor="black" barStyle="light-content" />
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Splash">
             <Stack.Screen 
                 name="Splash"
                 component={Splash}
@@ -66,6 +53,31 @@ const AppNavigator = () => {
                   headerStyle:{
                   backgroundColor:color.DarkBackGround,
                 }}}
+            />
+          <Stack.Screen 
+                name="Genre" 
+                component={GenreScreen}
+                options={{headerShown: false}}
+            />
+          <Stack.Screen 
+                name="Movies" 
+                component={MovieScreen}
+                options={{headerShown: false}}
+            />
+          <Stack.Screen 
+                name="TopAring" 
+                component={TopAiringScreen}
+                options={{headerShown: false}}
+            />
+          <Stack.Screen 
+                name="Testing" 
+                component={Testing}
+                options={{headerShown: false}}
+            />
+          <Stack.Screen 
+                name="SetLinks" 
+                component={SetLinks}
+                options={{headerShown: false}}
             />
         </Stack.Navigator>
       </View>

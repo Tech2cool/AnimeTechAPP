@@ -1,21 +1,22 @@
-import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, FlatList, Dimensions, ToastAndroid } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, FlatList, Dimensions, ToastAndroid, Share } from 'react-native'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import ThemeColors from '../../Utils/ThemeColors';
 import VideoPlayerr from '../../components/VideoPlayer';
-import { fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchSources, getAsynStorageData, storeAsynStorageData,filterNUE } from '../../Utils/Functions';
+import { fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchSources, getAsynStorageData, storeAsynStorageData,filterNUE, buildLink, fetchAnimeInfo, generateDynamicLink } from '../../Utils/Functions';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useVideoPlayer } from '../../Context/VideoPlayerContext';
 import { useLanguage } from '../../Context/LanguageContext';
 import EpisodeCard from '../../components/EpisodeCard';
-
+import { zIndex } from '../../Utils/contstant';
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
 let watchCout = 1;
 
 const VideoScreen = ({ route, navigation }) => {
-  const { anime, oneEpisode } = route.params;
+  const { anime, oneEpisode, animeId } = route.params;
   const [sources, setSources] = useState([]);
   const [episodes, setEpisodes] = useState([]);
+  const [animeData, setAnimeData] = useState({});
   const [episodeId, setEpisodeId] = useState(null);
   const [episodeNum, setEpisodeNum] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,11 +44,11 @@ const VideoScreen = ({ route, navigation }) => {
 
   let content, AnimeTitle, episodeTitle = "";
   if (currentLang === "en") {
-    AnimeTitle = (anime?.animeTitle?.english) || 
-                 (anime?.animeTitle?.english_jp)
+    AnimeTitle = (animeData?.animeTitle?.english) || 
+                 (animeData?.animeTitle?.english_jp)
   } else {
-    AnimeTitle = (anime?.animeTitle?.english_jp) || 
-                 (anime?.animeTitle?.japanese)
+    AnimeTitle = (animeData?.animeTitle?.english_jp) || 
+                 (animeData?.animeTitle?.japanese)
   }
 
   if (filterNUE(kistuEpDetails?.title?.english)||
@@ -63,41 +64,59 @@ const VideoScreen = ({ route, navigation }) => {
   }
   // if (kistuEpDetails.season) season = `S${kistuEpDetails?.season} `;
   
-  const myKey = `watchedList_${anime.animeID}`;
+  const myKey = `watchedList_${animeData?.animeID? animeData?.animeID:animeId}`;
 
   useEffect(() => {
     let eid, eNum;
     if (oneEpisode?.id !== undefined) {
       eid = oneEpisode?.id
     } else {
-      eid = anime?.episodeId
+      eid = animeData?.episodeId
     }
 
     if (oneEpisode?.number !== undefined) {
       eNum = oneEpisode?.number
     } else {
-      eNum = anime?.episodeNum
+      eNum = animeData?.episodeNum
     }
 
     setEpisodeId(eid);
     setEpisodeNum(eNum);
     // console.log("useeffect setepnum + id")
-  }, [anime?.episodeId, oneEpisode?.id, anime?.episodeNum, oneEpisode?.number])
+  }, [animeData?.episodeId, oneEpisode?.id, animeData?.episodeNum, oneEpisode?.number])
 
+  useEffect(()=>{
+    if(filterNUE(anime)){
+      setAnimeData(anime);
+      // console.log(anime)
+    }
+  },[anime])
+
+  useEffect(()=>{
+    if(filterNUE(animeId)){
+      const fetchAnimeDetailss= async()=>{
+        const req = await fetchAnimeInfo(animeId);
+        // console.log(req)
+        setAnimeData(req);
+      }
+      fetchAnimeDetailss();
+      // console.log("animeId: "+ animeId)  
+    }
+  },[animeId])
 
   const memoizedFetchSources = useMemo(() => async () => {
     try {
       setIsLoading(true);
       const req = await fetchSources(episodeId);
       setSources(req);
-      const kitsuReq = await fetchEpisodeDetailsFromKitsu(anime?.AdditionalInfo?.id, episodeNum);
+      const kitsuReq = await fetchEpisodeDetailsFromKitsu(animeData?.AdditionalInfo?.id, episodeNum);
       setKistuEpDetails(kitsuReq);
     } catch (error) {
       ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
     } finally {
       setIsLoading(false);
     }
-  }, [episodeId, episodeNum, anime]);
+  }, [episodeId, episodeNum, animeData]);
 
   // This effect will run when episodeId, episodeNum, or anime changes
   useEffect(() => {
@@ -106,7 +125,7 @@ const VideoScreen = ({ route, navigation }) => {
 
   const watchList = useMemo(() => {
     return {
-      anime: anime,
+      anime: animeData,
       episodeId: episodeId,
       watchingEpisode: episodeNum,
       watchedTime: videoState?.currentTime,
@@ -114,7 +133,7 @@ const VideoScreen = ({ route, navigation }) => {
       wannaDelete: false,
       timestamp: new Date().getTime(),
     }
-  }, [anime, episodeId, episodeNum, videoState?.currentTime, videoState?.duration])
+  }, [animeData, episodeId, episodeNum, videoState?.currentTime, videoState?.duration])
 
   useEffect(() => {
     if (watchCout > 5) {
@@ -131,8 +150,8 @@ const VideoScreen = ({ route, navigation }) => {
   const memoizedFetchEpisodes = useMemo(() => async () => {
     try {
       setIsLoadingEpisode(true)
-      // console.log(anime?.animeID, anime?.AdditionalInfo?.id);
-      const ep_req = await fetchEpisodes(anime?.animeID, anime?.AdditionalInfo?.id)
+      // console.log(animeData?.animeID, animeData?.AdditionalInfo?.id);
+      const ep_req = await fetchEpisodes(animeData?.animeID, animeData?.AdditionalInfo?.id)
       // console.log(ep_req);
       if (ep_req.length > 0) {
         setEpisodes(ep_req);
@@ -144,7 +163,16 @@ const VideoScreen = ({ route, navigation }) => {
       // console.log(error)
       setIsLoadingEpisode(false)
     }
-  }, [anime.animeID]);
+  }, [animeData?.animeID]);
+
+  // useEffect(()=>{
+  //   const fetchAnimeData = async()=>{
+  //     const req = await fetchAnimeInfo(animeId)
+  //     console.log(req)
+  //     setAnimeData(req);
+  //   }
+  //   fetchAnimeData()
+  // },[animeId])
 
   useEffect(() => {
     memoizedFetchEpisodes()
@@ -213,7 +241,32 @@ const VideoScreen = ({ route, navigation }) => {
     // console.log("offset" + offsetY)
     setCurrentScrollIndex(index);
   };
-
+  const handleShare = async()=>{
+    try {
+      // console.log(animeData?.animeImg)
+      const getLink = await buildLink(
+      "Video", 
+      `episodeId=${episodeId}&episodeNum=${episodeNum}&animeId=${animeData?.animeID}`,
+      `Episode ${episodeNum} - ${AnimeTitle}`, 
+      animeData?.animeImg,
+      `Episode ${episodeNum}`
+      )
+      // console.log("handle Share")
+      // const getLink = generateDynamicLink(episodeId,episodeNum,animeData?.animeID)
+      Share.share({
+        message:getLink,
+      })
+    } catch (error) {
+        console.log(error)
+    }
+  }
+  const handleGoBack = ()=>{
+    if(filterNUE(animeId)){
+      navigation.navigate("HomeStack")
+    }else{
+      navigation.goBack()
+    }
+  }
   if (isLoading) {
     content = <View style={{ minHeight: 180, justifyContent: "center", alignItems: "center", backgroundColor: color.DarkBackGround }}>
       <ActivityIndicator size="large" color={color.Orange} />
@@ -226,6 +279,7 @@ const VideoScreen = ({ route, navigation }) => {
         pQualities={sources}
         // url={sources?.find(src => src?.quality === "default") ? sources?.find(src => src.quality === "default")?.url : sources[0]?.url}
         url={sources?.find(src => src?.quality === "default") ? sources?.find(src => src.quality === "default")?.url : sources[0]?.url}
+        goback={handleGoBack}
         />
     ):(
       <View style={{ minHeight: 180, justifyContent: "center", alignItems: "center", 
@@ -243,12 +297,17 @@ const VideoScreen = ({ route, navigation }) => {
   }
   else {
     return (
-      <View style={{ flex: 1, backgroundColor: color.DarkBackGround, position: "relative" }}>
+      <View style={{ flex: 1, backgroundColor: color.DarkBackGround, position: "relative",zIndex:zIndex.CENTER }}>
         {/* <View style={{ minHeight: 180, backgroundColor: color.DarkBackGround }}> */}
           {content}
         {/* </View> */}
-        <View style={styles.Info}>
-          <Text numberOfLines={4} style={{ color: color.Orange, fontFamily: font.InterBlack, fontSize: 12 }}>{AnimeTitle}</Text>
+        <View style={[styles.Info,{position:"relative"}]}>
+          <Text 
+          numberOfLines={4} 
+          style={{ color: color.Orange, fontFamily: font.InterBlack, fontSize: 12 }}
+          onPress={() => navigation.navigate("AnimeInfo", { anime: animeData })}
+          >{AnimeTitle}</Text>
+
 
           <View style={{ flexDirection: "row", paddingVertical: 5, paddingHorizontal: 5, }}>
             <Text style={{ color: color.White, fontFamily: font.InterMedium, fontSize: 16, }}>Episode {episodeNum}</Text>
@@ -256,13 +315,20 @@ const VideoScreen = ({ route, navigation }) => {
           </View>
 
           {/* <View style={{ borderBottomColor: color.White, borderBottomWidth: 0.2, marginTop: 20 }}></View> */}
-          <View style={{ flexDirection: "row", justifyContent:episodeNum >1?"space-between": "flex-end", marginTop: 5 }}>
+          <View style={{ flexDirection: "row", justifyContent:episodeNum >1?"space-between": "flex-end", marginTop: 5,position:"relative"}}>
             {
               episodeNum > 1 && 
               <TouchableOpacity style={styles.Mybtns}>
                 <Text style={{ color: color.Orange, fontFamily: font.InterBlack }} onPress={handlePrevEpisode}>Previous</Text>
               </TouchableOpacity>
             }
+            <TouchableOpacity 
+            style={{position:"absolute", left:"45%",top:-5, justifyContent:"center", alignItems:"center"}}
+            onPress={handleShare}
+            >
+              <MCIcon name={"share"} size={30} color={"white"}/>
+              <Text style={{color:color.White}}>Share</Text>
+            </TouchableOpacity>
             {
               episodeNum < episodes.length &&
               <TouchableOpacity style={styles.Mybtns} onPress={handleNextEpisode}>
@@ -280,7 +346,7 @@ const VideoScreen = ({ route, navigation }) => {
                 <View style={{ flex: 1, position: "relative" }}>
                   {
                     episodes.length > 12 && (
-                      <View style={{ position: "absolute", right: 10, bottom: 20, zIndex: 50 }}>
+                      <View style={{ position: "absolute", right: 10, bottom: 20, zIndex: zIndex.TOP }}>
                         {
                           currentScrollIndex >= lastIndex - 2 && currentScrollIndex > 0 &&
                           <MCIcon name={"arrow-up-bold-circle-outline"} size={40} color={"white"}
@@ -302,7 +368,7 @@ const VideoScreen = ({ route, navigation }) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                       <TouchableOpacity onPress={() => handleEpisodeSwtich(item)}>
-                        <EpisodeCard episode={item} anime={anime} currentEpisode={episodeNum} />
+                        <EpisodeCard episode={item} anime={animeData} currentEpisode={episodeNum} />
                       </TouchableOpacity>
                     )}
                     windowSize={5} // Adjust this value
@@ -326,7 +392,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     top: 0,
-    zIndex: 20,
+    zIndex: zIndex.CENTER,
     marginTop: 8,
     marginLeft: 8,
   },

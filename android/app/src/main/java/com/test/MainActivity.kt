@@ -1,4 +1,4 @@
-package com.test
+package com.animetech
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

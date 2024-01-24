@@ -1,4 +1,4 @@
-package com.test
+package com.animetech
 
 import android.app.Application
 import com.facebook.react.PackageList

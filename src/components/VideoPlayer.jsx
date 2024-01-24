@@ -7,12 +7,18 @@ import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VideoControls from './VideoControls';
 import { getAsynStorageData, storeAsynStorageData } from '../Utils/Functions';
 import { useVideoPlayer } from '../Context/VideoPlayerContext';
+import { Slider } from '@react-native-assets/slider'
+import ThemeColors from '../Utils/ThemeColors';
+import { zIndex } from '../Utils/contstant';
 
+const color = ThemeColors.DARK
+let progressCount=1;
 export default function VideoPlayerr(props) {
   const {
     vId="__blank", 
     pQualities=[],
     url="__blank",
+    goback,
   } = props;
   const {videoState, setVideoState} = useVideoPlayer()
   const playbackRates = [0.25,0.5,1.0,1.5,2.0,2.5,3.0]
@@ -85,19 +91,43 @@ export default function VideoPlayerr(props) {
       ...prev,
       currentTime: data?.currentTime,
     }));
-    // console.log(data)
-    if(videoState.currentTime >= data.playableDuration && !paused && !isBuffering){
-      setVideoState(prev => ({
-        ...prev,
-        isBuffering: true,
-      }));
-    }else if(data.playableDuration > videoState.currentTime && !paused && isBuffering){
-      setVideoState(prev => ({
-        ...prev,
-        isBuffering: false,
-      }));
-      // console.log("bufferuing")
+    if(!paused){
+      if(videoState.currentTime >= data.playableDuration && !isBuffering){
+        setVideoState(prev => ({
+          ...prev,
+          isBuffering: true,
+        }));
+      }else if(data.playableDuration > videoState.currentTime && isBuffering){
+        setVideoState(prev => ({
+          ...prev,
+          isBuffering: false,
+        }));
+        // console.log("bufferuing")
+      }
+      if(progressCount > 15 && showControls){
+        setVideoState(prev => ({
+          ...prev,
+          showControls: false,
+        }));
+        progressCount = 1;
+      }else if(showControls){
+        progressCount++
+      }
+
     }
+    // console.log(data)
+    // if(videoState.currentTime >= data.playableDuration && !paused && !isBuffering){
+    //   setVideoState(prev => ({
+    //     ...prev,
+    //     isBuffering: true,
+    //   }));
+    // }else if(data.playableDuration > videoState.currentTime && !paused && isBuffering){
+    //   setVideoState(prev => ({
+    //     ...prev,
+    //     isBuffering: false,
+    //   }));
+      // console.log("bufferuing")
+    // }
     storeAsynStorageData(videoId, JSON.stringify(data?.currentTime))
   }
 /*
@@ -152,7 +182,11 @@ export default function VideoPlayerr(props) {
    // console.log("pass 2")
   }
   function handleOnEnd(){
-    
+    setVideoState(prev=>({
+      ...prev,
+      paused:true,
+      isBuffering:false,
+      }));
   }
   function handleSeek(value){
     VideoRef.current.seek(value);
@@ -260,13 +294,22 @@ export default function VideoPlayerr(props) {
     };
   }, []);
 
-
+  const handlegoBack =()=>{
+    if(goback){
+      // console.log("gobackc");
+      goback()
+    }
+    else{
+      // console.log("no back");
+      navigation.goBack()
+    }
+  }
   return videoState.currentQuality.url !=="" &&(
     <View style={isFullscreen ? styles.container:styles.container_noFlex}>
       <TouchableWithoutFeedback
         onPress={handleControls}
       >
-      <View style={{backgroundColor:"black"}}>
+      <View style={[videoId.resizeMode === "cover" && styles.fullcenter,{backgroundColor:"black"}]}>
       <Video
         ref={VideoRef}
         fullscreen={isFullscreen}
@@ -283,7 +326,7 @@ export default function VideoPlayerr(props) {
         // onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
       />
       {
-        showControls&&(
+        showControls?(
           <View style={styles.controlOverlay}>
           <VideoControls 
             videoState={videoState}
@@ -299,12 +342,32 @@ export default function VideoPlayerr(props) {
             handlePlaybackSpeed={handlePlaybackSpeed}
             handleSetQuality={handleSetQuality}
             handleResizeSetting={handleResizeSetting}
+            handlegoBack={handlegoBack}
           />
           </View>
-        )
+        ):(
+          !isFullscreen &&(
+            <View style={styles.controlOverlay2}>
+          <Slider
+            value={videoState.currentTime}
+            // value={50}
+            minimumValue={0}                  // Minimum value
+            maximumValue={videoState.duration} // Maximum value
+            thumbTintColor={color.Red}
+            thumbSize={3}
+            // onValueChange={handleSeek}
+            slideOnTap={false}
+            trackHeight={3}
+            step={1}
+            minimumTrackTintColor={color.Red}
+            // minimumTrackTintColor={"#008cff"}
+          />
+            </View>
+          )
+          )
       }
       {isBuffering &&(
-          <ActivityIndicator style={{position:"absolute", top:"40%", left:"45%", zIndex:9,}} color="white" size="large" />
+          <ActivityIndicator style={{position:"absolute", top:"40%", left:"45%", zIndex:zIndex.CENTER,}} color="white" size="large" />
       )}
 
       </View>
@@ -318,11 +381,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ebebeb',
-    position:"relative"
+    position:"relative",
+    zIndex:zIndex.TOP,
   },
   container_noFlex: {
     backgroundColor: '#ebebeb',
-    position:"relative"
+    position:"relative",
+    zIndex:zIndex.TOP,
+  },
+  fullcenter:{
+    flex: 1,
+    justifyContent:'center',
+    alignItems:"center"
   },
   video: {
     height: Dimensions.get('window').width * (9 / 16),
@@ -343,6 +413,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000c4',
     justifyContent: 'space-between',
     paddingHorizontal:10,
-    zIndex:11
+    zIndex:zIndex.TOP
+  },
+  controlOverlay2:{
+    position: 'absolute',
+    bottom: -10,
+    left: 0,
+    width:Dimensions.get("window").width,
+    // backgroundColor: 'red',
+    // justifyContent: 'space-between',
+    // paddingHorizontal:10,
+    zIndex:zIndex.TOP
   },
 })

@@ -5,13 +5,14 @@ import MIcon from 'react-native-vector-icons/MaterialIcons';
 import IIcon from 'react-native-vector-icons/Ionicons';
 import { Slider } from '@react-native-assets/slider'
 import { useNavigation } from '@react-navigation/native';
+import { zIndex } from '../Utils/contstant';
 
 export default function VideoControls(props) {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   
   const { videoState, setVideoState, handleFullscreen, handleSeek,
     getMinutesFromSeconds, handleSetting,handlePlayPause, handleQualitySetting, 
-    playbackRates, handlePlaybackRateSetting, handlePlaybackSpeed,handleSetQuality,handleResizeSetting} = props;
+    playbackRates, handlePlaybackRateSetting, handlePlaybackSpeed,handleSetQuality,handleResizeSetting, handlegoBack} = props;
 
   const { currentTime, duration, showSettings, isFullscreen,
     showQualitySetting, showPlaybackRateSetting,playbackSpeed,currentQuality} = videoState;
@@ -137,7 +138,7 @@ export default function VideoControls(props) {
       <View style={styles.topWrapper}>
         <View style={styles.topWrapperRight}>
           {/* GoBack start*/}
-          <IIcon name={"arrow-back"} size={25} color={"#ffff"} onPress={()=>navigation.goBack()}/>
+          <IIcon name={"arrow-back"} size={25} color={"#ffff"} onPress={handlegoBack}/>
           {/* GoBack end */}
           {/* Setting start*/}
           {/* <Text style={{ color: "red" }}>fullscreen</Text> */}
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
     top: 50,
     maxWidth: 200,
     maxHeight: 140,
-    zIndex: 10,
+    zIndex: zIndex.TOP+1,
   },
   settingOvarlayFullscreen: {
     position: "absolute",
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
     top: 50,
     maxWidth: 300,
     maxHeight: 300,
-    zIndex: 10,
+    zIndex: zIndex.TOP+1,
   },
 
   settinWrapper: {

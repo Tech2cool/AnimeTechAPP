@@ -1,5 +1,6 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 const BASE_URL = "https://gogo-server.vercel.app";
 
@@ -22,6 +23,35 @@ const fetchLatestAnime = async (pageNum = 1, perPage = 12) => {
     return error
   }
 }
+const fetchAnimeByGenre = async (genre, page=1) => {
+  try {
+    const result = await axios.get(`${BASE_URL}/genre/${genre}/${page}`);
+    // console.log({result:"result 1"},result.data);
+    return result.data
+  } catch (error) {
+    return error
+  }
+}
+const fetchAnimeMovies = async (alphabet="",page=1) => {
+  try {
+    const result = await axios.get(`${BASE_URL}/movies?alphabet=${alphabet}&page=${page}`);
+    // console.log({result:"result 1"},result.data);
+    return result.data
+  } catch (error) {
+    return error
+  }
+}
+const fetchTopAiringAnime = async (page=1) => {
+  try {
+    const result = await axios.get(`${BASE_URL}/top-airing?page=${page}`);
+    // console.log({result:"result 1"},result.data);
+    return result.data
+  } catch (error) {
+    return error
+  }
+}
+
+
 const fetchAnimeBySearch = async (sTitle, sPage) => {
   try {
     const result = await axios.get(`${BASE_URL}/search?title=${encodeURIComponent(sTitle)}&page=${sPage}`)
@@ -116,9 +146,53 @@ function filterNUE(data){
   return false
   else return true
 }
+const getQueryParams = (url) => {
+  const queryParams = {};
+  const queryString = url.split('?')[1];
+
+  if (queryString) {
+    const pairs = queryString.split('&');
+    pairs.forEach(pair => {
+      const [key, value] = pair.split('=');
+      queryParams[key] = value;
+    });
+  }
+
+  return queryParams;
+};
+const BASE_SHARE_URL ="https://animetechapp.page.link";
+async function buildLink(key, data, Title="", posterUrl="", customMessege="") {
+  console.log(customMessege)
+  const link = await dynamicLinks().buildLink({
+    link: `${BASE_SHARE_URL}/${key}?${data}`,
+    domainUriPrefix: BASE_SHARE_URL,
+    android:{
+      packageName:"com.animetech",
+      imageUrl: posterUrl,
+    },
+    social: {
+      title: Title,
+      description: customMessege, // Set your message
+      imageUrl:posterUrl,
+    },
+
+    // analytics: {
+    //   campaign: 'banner',
+    // },
+  }, dynamicLinks.ShortLinkType.SHORT);
+  // console.log(link)
+  // setMyLink(link)
+  return link;
+}
+const generateDynamicLink = (episodeId, episodeNum, animeId) => {
+  const baseLink = 'https://gogo-server.vercel.app/video';
+  const encodedLink = `${baseLink}?episodeId=${encodeURIComponent(episodeId)}&episodeNum=${encodeURIComponent(episodeNum)}&animeId=${encodeURIComponent(animeId)}`;
+  return encodedLink;
+};
 
 export {
   fetchSources, getAsynStorageData, storeAsynStorageData, fetchLatestAnime,
   fetchAnimeBySearch, fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchAnimeInfo,
-  fetchPopularAnime, getAllAsynStorageData,filterNUE
+  fetchPopularAnime, getAllAsynStorageData,filterNUE,fetchAnimeByGenre,fetchAnimeMovies,
+  fetchTopAiringAnime,getQueryParams,buildLink,generateDynamicLink
 }

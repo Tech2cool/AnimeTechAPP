@@ -5,7 +5,7 @@ import ThemeColors from '../../Utils/ThemeColors';
 import AnimeCard from '../../components/AnimeCard';
 
 const color = ThemeColors.DARK;
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
 
   const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,15 +14,15 @@ export default function HomeScreen({navigation}) {
   const [page, setPage] = useState({
     currentPage: 1,
     totalPage: 1,
-    availPages:[],
+    availPages: [],
   });
-  
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchAnime(1);
-    setPage(prev=>({
+    setPage(prev => ({
       ...prev,
-      currentPage:1,
+      currentPage: 1,
     }))
     setTimeout(() => {
       setRefreshing(false);
@@ -37,14 +37,14 @@ export default function HomeScreen({navigation}) {
       // console.log("fetchPage: "+page, typeof(page))
       const req = await fetchLatestAnime(page);
       // console.log("req" + req.totalPages + typeof(req.totalPages))
-     setAnime(req.list);
-     setPage(prev=>(
-      {
-        ...prev,
-        totalPage:req.totalPages
-       }
-     ));
-     setIsLoading(false);
+      setAnime(req.list);
+      setPage(prev => (
+        {
+          ...prev,
+          totalPage: req.totalPages
+        }
+      ));
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -53,9 +53,9 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     fetchAnime(1);
-        setPage(prev=>({
+    setPage(prev => ({
       ...prev,
-      currentPage:1,
+      currentPage: 1,
     }))
 
     // console.log("called");
@@ -63,72 +63,77 @@ export default function HomeScreen({navigation}) {
   useEffect(() => {
     // console.log(typeof({page:page.currentPage}));
     // console.log(typeof("tpage" + page.totalPage));
-    const avPages=[];
-    for(let i= 1; i<=page.totalPage; i++){
+    const avPages = [];
+    for (let i = 1; i <= page.totalPage; i++) {
       avPages.push(i);
     }
-    setPage(prev=>({
+    setPage(prev => ({
       ...prev,
-      availPages:avPages,
+      availPages: avPages,
     }))
     // console.log("avail:" + avPages)
   }, [page.totalPage])
 
-  const handlePrevious = ()=>{
-    if(page.currentPage <=1) return;
+  const handlePrevious = () => {
+    if (page.currentPage <= 1) return;
     // console.log("prev")
     fetchAnime(page.currentPage - 1);
-    setPage(prev=>(
+    setPage(prev => (
       {
         ...prev,
-        currentPage:page.currentPage - 1,
-       }
-    )) 
+        currentPage: page.currentPage - 1,
+      }
+    ))
   }
-  const handleNext = ()=>{
-    if(page.currentPage >= page.totalPage) return;
-    
+  const handleNext = () => {
+    if (page.currentPage >= page.totalPage) return;
+
     // console.log("Next")
     // console.log("Next: "+ page.currentPage + typeof(page.currentPage))
     fetchAnime(page.currentPage + 1)
-    setPage(prev=>(
+    setPage(prev => (
       {
         ...prev,
-        currentPage:page.currentPage + 1,
-       }
+        currentPage: page.currentPage + 1,
+      }
     ))
   }
-  if(isLoading && !refreshing){
-    content = <ActivityIndicator size="large" color={color.Orange}/>
-  }else{
+  if (isLoading && !refreshing) {
+    content = <ActivityIndicator size="large" color={color.Orange} />
+  } else {
     content = anime?.map((anim) => (
-        <TouchableOpacity  activeOpacity={0.7} key={anim.animeID} 
-        onPress={()=>{ navigation.navigate("Video",{anime: anim})
+      <TouchableOpacity activeOpacity={0.7} key={anim.animeID}
+        onPress={() => {
+          navigation.navigate("Video", { anime: anim })
         }}>
-          <AnimeCard anime={anim}/>
-        </TouchableOpacity>))
+        <AnimeCard anime={anim} />
+      </TouchableOpacity>))
   }
 
   return (
     <ScrollView style={styles.container}
-    refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styles.mcontainer}>
         {content}
         <View style={styles.BtnContainer}>
-          <TouchableOpacity style={styles.myBtn} onPress={handlePrevious} >
-            <Text style={styles.buttonText}>Previous</Text>
-          </TouchableOpacity>
-          
+          {
+            page.totalPage > 1 && page.currentPage > 1 && (
+              <TouchableOpacity style={styles.myBtn} onPress={handlePrevious} >
+                <Text style={styles.buttonText}>Previous</Text>
+              </TouchableOpacity>
+            )
+          }
           <View style={styles.currentPage}>
-            <Text style={{ color: color.White, fontWeight:"600",fontSize:20, }}>{page.currentPage}</Text>
+            <Text style={{ color: color.White, fontWeight: "600", fontSize: 20, }}>{page.currentPage}</Text>
           </View>
-
-          <TouchableOpacity style={styles.myBtn} onPress={handleNext} >
-            <Text style={styles.buttonText}>Next</Text>
-          </TouchableOpacity>
-
+          {
+            page.totalPage > 1 && page.currentPage < page.totalPage &&
+            (<TouchableOpacity style={styles.myBtn} onPress={handleNext} >
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>)
+          }
         </View>
       </View>
     </ScrollView>
@@ -150,14 +155,14 @@ const styles = StyleSheet.create({
     gap: 10,
     flex: 1,
     justifyContent: "center",
-    alignItems:"center",
+    alignItems: "center",
     marginVertical: 10,
   },
   currentPage: {
     borderRadius: 99,
     backgroundColor: color.DarkBackGround,
-    borderWidth:5,
-    borderColor:color.White,
+    borderWidth: 5,
+    borderColor: color.White,
     width: 50,
     height: 50,
     justifyContent: "center",
@@ -167,7 +172,7 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     // width: 100,
     // height: 200,
-    flex:1,
+    flex: 1,
     paddingHorizontal: 24,
     backgroundColor: '#3498db',
     borderRadius: 8,

@@ -123,18 +123,23 @@ export default function SearchScreen({navigation}) {
           <IIcon name={"search"} size={30} color={color.Orange} onPress={() => fetchAnime(debouncedSearch,1)}/>
         </KeyboardAvoidingView>
           { content }
-        <View style={styles.BtnContainer}>
-          <TouchableOpacity style={styles.myBtn} onPress={handlePrevious} >
-            <Text style={styles.buttonText}>Previous</Text>
-          </TouchableOpacity>
-          
+          <View style={styles.BtnContainer}>
+          {
+            page.totalPage > 1 && page.currentPage > 1 && (
+              <TouchableOpacity style={styles.myBtn} onPress={handlePrevious} >
+                <Text style={styles.buttonText}>Previous</Text>
+              </TouchableOpacity>
+            )
+          }
           <View style={styles.currentPage}>
-            <Text style={{ color: color.White, fontWeight:"600",fontSize:20, }}>{page.currentPage}</Text>
+            <Text style={{ color: color.White, fontWeight: "600", fontSize: 20, }}>{page.currentPage}</Text>
           </View>
-
-          <TouchableOpacity style={styles.myBtn} onPress={handleNext} >
-            <Text style={styles.buttonText}>Next</Text>
-          </TouchableOpacity>
+          {
+            page.totalPage > 1 && page.currentPage < page.totalPage &&
+            (<TouchableOpacity style={styles.myBtn} onPress={handleNext} >
+              <Text style={styles.buttonText}>Next</Text>
+            </TouchableOpacity>)
+          }
         </View>
       </View>
     </ScrollView>

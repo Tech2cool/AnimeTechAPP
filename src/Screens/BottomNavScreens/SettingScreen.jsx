@@ -30,6 +30,33 @@ export default function SettingScreen({navigation}) {
             // onPress={() => navigation.goBack()}
           /> 
       </TouchableOpacity>
+      <TouchableOpacity style={styles.List} onPress={()=>{ navigation.navigate("Genre")}}>
+        <Text style={styles.ListText} >Find by Genre</Text>
+          <MIcon 
+            name={"keyboard-arrow-right"} 
+            size={25} 
+            color={color.Orange}
+            // onPress={() => navigation.goBack()}
+          /> 
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.List} onPress={()=>{ navigation.navigate("Movies")}}>
+        <Text style={styles.ListText} >Find Anime Movies</Text>
+          <MIcon 
+            name={"keyboard-arrow-right"} 
+            size={25} 
+            color={color.Orange}
+            // onPress={() => navigation.goBack()}
+          /> 
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.List} onPress={()=>{ navigation.navigate("TopAring")}}>
+        <Text style={styles.ListText} >Top Airing Anime</Text>
+          <MIcon 
+            name={"keyboard-arrow-right"} 
+            size={25} 
+            color={color.Orange}
+            // onPress={() => navigation.goBack()}
+          /> 
+      </TouchableOpacity>
     </View>
   )
 }
