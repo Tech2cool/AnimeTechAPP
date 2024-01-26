@@ -1,11 +1,10 @@
-import { View, Text, Image, ScrollView, RefreshControl, ToastAndroid } from 'react-native'
+import { View, Text,ScrollView, RefreshControl, ToastAndroid } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ThemeColors from '../../Utils/ThemeColors';
 import WatchListCard from '../../components/WatchListCard';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { throttle } from 'lodash';
 
 const myWatchListKey = "watchedList_";
 const color = ThemeColors.DARK
@@ -27,16 +26,14 @@ const WatchListScreen = ({ route, navigation }) => {
   const getAllWatchedEpisodes = async (myKey) => {
     try {
       const allKeys = await AsyncStorage.getAllKeys();
-
-      // Filter keys that match the pattern
       const watchedEpisodeKeys = allKeys.filter(key => key.startsWith(myKey));
-
-      // Retrieve the values for the filtered keys
       const watchedEpisodes = await AsyncStorage.multiGet(watchedEpisodeKeys);
 
-      // Parse the values from JSON
-      //   console.log(watchedEpisodes)
-      return watchedEpisodes.map(([key, value]) => ({ mainId: key, value: JSON.parse(value) }));
+      const sortedWatchedEpisodes = watchedEpisodes
+      .map(([key, value]) => ({ mainId: key, value: JSON.parse(value) }))
+      .sort((a, b) => b.value.timestamp - a.value.timestamp);
+      return sortedWatchedEpisodes
+      // return watchedEpisodes.map(([key, value]) => ({ mainId: key, value: JSON.parse(value) }));
     } catch (error) {
       console.error('Error retrieving watched episodes:', error);
       return [];

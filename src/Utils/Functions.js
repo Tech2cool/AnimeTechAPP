@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 
 const BASE_URL = "https://gogo-server.vercel.app";
+const BASE_SHARE_URL = "https://animetechapp.page.link";
 
 const fetchSources = async (episodeId) => {
   try {
@@ -23,7 +24,7 @@ const fetchLatestAnime = async (pageNum = 1, perPage = 12) => {
     return error
   }
 }
-const fetchAnimeByGenre = async (genre, page=1) => {
+const fetchAnimeByGenre = async (genre, page = 1) => {
   try {
     const result = await axios.get(`${BASE_URL}/genre/${genre}/${page}`);
     // console.log({result:"result 1"},result.data);
@@ -32,7 +33,7 @@ const fetchAnimeByGenre = async (genre, page=1) => {
     return error
   }
 }
-const fetchAnimeMovies = async (alphabet="",page=1) => {
+const fetchAnimeMovies = async (alphabet = "", page = 1) => {
   try {
     const result = await axios.get(`${BASE_URL}/movies?alphabet=${alphabet}&page=${page}`);
     // console.log({result:"result 1"},result.data);
@@ -41,7 +42,7 @@ const fetchAnimeMovies = async (alphabet="",page=1) => {
     return error
   }
 }
-const fetchTopAiringAnime = async (page=1) => {
+const fetchTopAiringAnime = async (page = 1) => {
   try {
     const result = await axios.get(`${BASE_URL}/top-airing?page=${page}`);
     // console.log({result:"result 1"},result.data);
@@ -51,37 +52,39 @@ const fetchTopAiringAnime = async (page=1) => {
   }
 }
 
-
 const fetchAnimeBySearch = async (sTitle, sPage) => {
   try {
     const result = await axios.get(`${BASE_URL}/search?title=${encodeURIComponent(sTitle)}&page=${sPage}`)
     // console.log({result1_Data:"result1_Data"}, result.data);
     return result.data
   } catch (error) {
+    // console.log(error);
     return error
-    console.log(error);
   }
 }
+
 const fetchAnimeInfo = async (animeId) => {
   try {
     const result = await axios.get(`${BASE_URL}/anime-details?animeID=${encodeURIComponent(animeId)}`)
     // console.log({result1_Data:"result1_Data"}, result.data);
     return result.data
   } catch (error) {
+    // console.log(error);
     return error
-    console.log(error);
   }
 }
+
 const fetchPopularAnime = async (page) => {
   try {
     const result = await axios.get(`${BASE_URL}/popular?page=${page}`)
     // console.log({result1_Data:"result1_Data"}, result.data);
     return result.data
   } catch (error) {
+    // console.log(error);
     return error
-    console.log(error);
   }
 }
+
 const fetchEpisodeDetailsFromKitsu = async (kId, EpNum) => {
   try {
     // kid?KitsuId=44172&episode=37
@@ -89,10 +92,11 @@ const fetchEpisodeDetailsFromKitsu = async (kId, EpNum) => {
     // console.log({result1_Data:"kistu_Data"}, result.data);
     return result.data
   } catch (error) {
+    // console.log(error);
     return error
-    console.log(error);
   }
 }
+
 const fetchEpisodes = async (animeId, kId) => {
   try {
     // kid?KitsuId=44172&episode=37
@@ -100,7 +104,7 @@ const fetchEpisodes = async (animeId, kId) => {
     // console.log({result1_Data:"kistu_Data"}, result.data);
     return result.data
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error
   }
 }
@@ -141,39 +145,40 @@ const getAllAsynStorageData = async () => {
     return [];
   }
 };
-function filterNUE(data){
-  if(data === null || data=== undefined || data === "" || data === "undefined" || data === "null")
-  return false
+function filterNUE(data) {
+  if (data === null || data === undefined || data === "" || data === "undefined" || data === "null")
+    return false
   else return true
 }
+
 const getQueryParams = (url) => {
   const queryParams = {};
-  const queryString = url.split('?')[1];
+  const queryString = url?.split('?')[1];
 
   if (queryString) {
-    const pairs = queryString.split('&');
+    const pairs = queryString?.split('&');
     pairs.forEach(pair => {
-      const [key, value] = pair.split('=');
+      const [key, value] = pair?.split('=');
       queryParams[key] = value;
     });
   }
 
   return queryParams;
 };
-const BASE_SHARE_URL ="https://animetechapp.page.link";
-async function buildLink(key, data, Title="", posterUrl="", customMessege="") {
-  console.log(customMessege)
+
+async function buildLink(key, data, Title = "", posterUrl = "", customMessege = "") {
+  // console.log(customMessege)
   const link = await dynamicLinks().buildLink({
     link: `${BASE_SHARE_URL}/${key}?${data}`,
     domainUriPrefix: BASE_SHARE_URL,
-    android:{
-      packageName:"com.animetech",
+    android: {
+      packageName: "com.animetech",
       imageUrl: posterUrl,
     },
     social: {
       title: Title,
       description: customMessege, // Set your message
-      imageUrl:posterUrl,
+      imageUrl: posterUrl,
     },
 
     // analytics: {
@@ -184,15 +189,38 @@ async function buildLink(key, data, Title="", posterUrl="", customMessege="") {
   // setMyLink(link)
   return link;
 }
-const generateDynamicLink = (episodeId, episodeNum, animeId) => {
-  const baseLink = 'https://gogo-server.vercel.app/video';
-  const encodedLink = `${baseLink}?episodeId=${encodeURIComponent(episodeId)}&episodeNum=${encodeURIComponent(episodeNum)}&animeId=${encodeURIComponent(animeId)}`;
-  return encodedLink;
+const generateDynamicLink = async (key, animeId, episodeId, episodeNum, imageUrl, title, description) => {
+  // const baseLink = 'https://gogo-server.vercel.app/video';
+
+  const share = 'share';
+  const baseURI = "https://ani-short.vercel.app";
+  const myUrl = `${baseURI}/${share}?key=${key}&animeId=${animeId}&episodeId=${episodeId}&episodeNum=${episodeNum}`;
+  saveGeneratedLink(key, animeId, episodeId, episodeNum, imageUrl, title, description)
+  return myUrl;
 };
+
+async function saveGeneratedLink(key, animeId, episodeId, episodeNum, imageUrl, title, description) {
+  try {
+    await axios.post(`https://ani-short.vercel.app/url`, {
+      key,
+      animeId: encodeURIComponent(animeId),
+      episodeId: encodeURIComponent(episodeId),
+      episodeNum: episodeNum,
+      imageUrl: imageUrl,
+      title: title,
+      description: description,
+    });
+    // console.log("linked")
+    // return req.data
+  } catch (error) {
+    // console.log(error)
+    return error
+  }
+}
 
 export {
   fetchSources, getAsynStorageData, storeAsynStorageData, fetchLatestAnime,
   fetchAnimeBySearch, fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchAnimeInfo,
-  fetchPopularAnime, getAllAsynStorageData,filterNUE,fetchAnimeByGenre,fetchAnimeMovies,
-  fetchTopAiringAnime,getQueryParams,buildLink,generateDynamicLink
+  fetchPopularAnime, getAllAsynStorageData, filterNUE, fetchAnimeByGenre, fetchAnimeMovies,
+  fetchTopAiringAnime, getQueryParams, buildLink, generateDynamicLink,
 }

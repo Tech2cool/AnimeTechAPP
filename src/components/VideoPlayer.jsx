@@ -104,7 +104,9 @@ export default function VideoPlayerr(props) {
         }));
         // console.log("bufferuing")
       }
-      if(progressCount > 15 && showControls){
+      // console.log("showQualitySetting"+showQualitySetting)
+      // console.log("showPlaybackRateSetting"+showPlaybackRateSetting)
+      if((progressCount > 15 && showControls) && (!showQualitySetting && !showPlaybackRateSetting)){
         setVideoState(prev => ({
           ...prev,
           showControls: false,

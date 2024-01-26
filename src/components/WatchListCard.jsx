@@ -3,6 +3,7 @@ import React from 'react'
 
 import ThemeColors from '../Utils/ThemeColors'
 import { useLanguage } from '../Context/LanguageContext';
+import { filterNUE } from '../Utils/Functions';
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
 export default function WatchListCard(props) {
@@ -11,7 +12,7 @@ const {anime, episodeId, watchingEpisode, watchedTime, duration} = props;
   const{currentLang}=useLanguage();
   let AnimeTitle,status=anime?.AdditionalInfo?.status;
     if(currentLang === "en"){
-        AnimeTitle= (anime?.animeTitle?.english !== null && anime?.animeTitle?.english) || (anime?.animeTitle?.english_jp)
+        AnimeTitle= (filterNUE(anime?.animeTitle?.english) && anime?.animeTitle?.english) || (anime?.animeTitle?.english_jp)
     }else{
         AnimeTitle= (anime?.animeTitle?.english_jp) || (anime?.animeTitle?.japanese)
     }
@@ -32,12 +33,14 @@ const {anime, episodeId, watchingEpisode, watchedTime, duration} = props;
             <Text numberOfLines={3} style={styles.Title}>{AnimeTitle}</Text>
             <View style={{flexDirection:"row",alignItems:'center', columnGap:2}}>
             <Text style={[styles.Episode, {fontSize:15, color:color.White}]}>Episode {watchingEpisode}</Text> 
-            {anime?.subOrDub && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>({anime?.subOrDub})</Text> }
+            {filterNUE(anime?.subOrDub) && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>({anime?.subOrDub})</Text> }
 
             </View>
             <Text style={styles.Episode}>Watched: {calculateWatchTime()}%</Text>
-            {anime?.year && <Text style={styles.Episode}>Year: {anime?.year}</Text> }
-            {anime?.AdditionalInfo?.status && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>Status: {status}</Text> }
+            {filterNUE(anime?.year) && <Text style={styles.Episode}>Year: {
+                anime?.year !== 0?anime?.year:anime?.AdditionalInfo?.startDate?.split("-")[0]
+            }</Text> }
+            {filterNUE(anime?.AdditionalInfo?.status) && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>Status: {status}</Text> }
         </View>
       </View>
   )

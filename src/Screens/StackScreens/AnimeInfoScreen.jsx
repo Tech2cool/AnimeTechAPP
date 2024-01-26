@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Dimensions, FlatList, Button } from 'react-native'
+import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Dimensions, FlatList, Button, ToastAndroid } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import ThemeColors from '../../Utils/ThemeColors';
-import { fetchAnimeInfo, fetchEpisodeDetailsFromKitsu, fetchEpisodes } from '../../Utils/Functions';
+import { fetchAnimeInfo, fetchEpisodeDetailsFromKitsu, fetchEpisodes, filterNUE } from '../../Utils/Functions';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useLanguage } from '../../Context/LanguageContext';
 import EpisodeCard from '../../components/EpisodeCard';
@@ -25,6 +25,7 @@ const AnimeInfoScreen = ({ route, navigation }) => {
   const { currentLang } = useLanguage();
   const flatListRef = useRef(null);
 
+  // console.log(anime?.AdditionalInfo?.startDate.split("-")[0])
 
   let content, AnimeTitle;
   if (currentLang === "en") {
@@ -41,7 +42,8 @@ const AnimeInfoScreen = ({ route, navigation }) => {
         setEpisodes(ep_req);
         setIsLoadingEpisode(false)
       } catch (error) {
-        console.log(error)
+        // console.log(error)
+        ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
         setIsLoadingEpisode(false)
         setIsLoading(false)
       }
@@ -49,19 +51,20 @@ const AnimeInfoScreen = ({ route, navigation }) => {
     const fetchAINFO = async () => {
       try {
         setIsLoading(true)
-        const animeInfo_req = await fetchAnimeInfo(anime.animeID)
+        const animeInfo_req = await fetchAnimeInfo(anime?.animeID)
         // console.log(animeInfo_req)
         setAnimeInfo(animeInfo_req)
         setIsLoading(false)
       } catch (error) {
-        console.log(error)
+        // console.log(error)
+        ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
         setIsLoading(false)
       }
     }
     fetchEPEtc();
     fetchAINFO();
     // console.log(anime.animeID)
-  }, [anime.animeID])
+  }, [anime?.animeID])
 
   useEffect(() => {
     const lastIndex = episodes.length - 1;
@@ -99,9 +102,9 @@ const AnimeInfoScreen = ({ route, navigation }) => {
         <View style={{ flex: 1, flexWrap: "wrap", flexDirection: "row", columnGap: 2, rowGap: 5 }}>
           <MyGenrecard Title={`TotalEpisodes: ${animeInfo?.totalEpisodes}`} />
           <MyGenrecard Title={`Status: ${animeInfo?.status}`} />
-          <MyGenrecard Title={`Year: ${anime?.year}`} />
+          <MyGenrecard Title={`Year: ${filterNUE(anime?.year)?anime?.year:anime?.AdditionalInfo?.startDate?.split("-")[0]}`} />
           <MyGenrecard Title={`${anime?.AdditionalInfo?.ageRating + " " + anime?.AdditionalInfo?.ageRatingGuide}`} />
-          <MyGenrecard Title={`Type: ${animeInfo?.type}`} />
+          <MyGenrecard Title={`${animeInfo?.type}`} />
         </View>
         <View style={{ flex: 1, flexWrap: "wrap", flexDirection: "row", gap: 2 }}>
           {animeInfo?.genres?.map((genre, i) => (
@@ -110,7 +113,7 @@ const AnimeInfoScreen = ({ route, navigation }) => {
         </View>
         {/* Description */}
         <View style={{ flex: 1, padding: 5 }}>
-          <Text numberOfLines={showMore ? undefined : 4} style={{ color: color.LightGray }}>{animeInfo?.synopsis}</Text>
+          <Text numberOfLines={showMore ? undefined : 4} style={{ color: color.LightGray }}>{filterNUE(animeInfo?.synopsis)?animeInfo?.synopsis:anime?.AdditionalInfo?.description}</Text>
           <TouchableOpacity style={{
             flex: 0, alignSelf: "center", color: color.White,
             backgroundColor: color.White,

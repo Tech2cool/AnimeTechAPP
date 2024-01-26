@@ -21,6 +21,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 ios/.xcode.env.local
+test.json
 
 # Android/IntelliJ
 #
@@ -33,7 +34,8 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
-
+my-upload-key.keystore
+google-services.json
 # node.js
 #
 node_modules/

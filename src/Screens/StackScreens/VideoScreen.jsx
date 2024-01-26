@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Fla
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import ThemeColors from '../../Utils/ThemeColors';
 import VideoPlayerr from '../../components/VideoPlayer';
-import { fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchSources, getAsynStorageData, storeAsynStorageData,filterNUE, buildLink, fetchAnimeInfo, generateDynamicLink } from '../../Utils/Functions';
+import { fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchSources, getAsynStorageData, storeAsynStorageData,filterNUE, buildLink, fetchAnimeInfo, generateDynamicLink, generateDynamicLink2 } from '../../Utils/Functions';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useVideoPlayer } from '../../Context/VideoPlayerContext';
 import { useLanguage } from '../../Context/LanguageContext';
@@ -68,13 +68,13 @@ const VideoScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     let eid, eNum;
-    if (oneEpisode?.id !== undefined) {
+    if (filterNUE(oneEpisode?.id)) {
       eid = oneEpisode?.id
     } else {
       eid = animeData?.episodeId
     }
 
-    if (oneEpisode?.number !== undefined) {
+    if (filterNUE(oneEpisode?.number)) {
       eNum = oneEpisode?.number
     } else {
       eNum = animeData?.episodeNum
@@ -243,21 +243,20 @@ const VideoScreen = ({ route, navigation }) => {
   };
   const handleShare = async()=>{
     try {
-      // console.log(animeData?.animeImg)
-      const getLink = await buildLink(
-      "Video", 
-      `episodeId=${episodeId}&episodeNum=${episodeNum}&animeId=${animeData?.animeID}`,
-      `Episode ${episodeNum} - ${AnimeTitle}`, 
-      animeData?.animeImg,
-      `Episode ${episodeNum}`
-      )
-      // console.log("handle Share")
-      // const getLink = generateDynamicLink(episodeId,episodeNum,animeData?.animeID)
+      const getLink = await generateDynamicLink(
+        "video",
+        filterNUE(animeData?.animeID)?animeData?.animeID:animeId, 
+        episodeId, 
+        episodeNum, 
+        animeData?.animeImg, 
+        `Episode ${episodeNum} - ${AnimeTitle}`, 
+        "")
       Share.share({
         message:getLink,
       })
     } catch (error) {
-        console.log(error)
+        // console.log("err: "+ error)
+        ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
     }
   }
   const handleGoBack = ()=>{
@@ -298,47 +297,50 @@ const VideoScreen = ({ route, navigation }) => {
   else {
     return (
       <View style={{ flex: 1, backgroundColor: color.DarkBackGround, position: "relative",zIndex:zIndex.CENTER }}>
-        {/* <View style={{ minHeight: 180, backgroundColor: color.DarkBackGround }}> */}
           {content}
-        {/* </View> */}
         <View style={[styles.Info,{position:"relative"}]}>
+          {/* anime Title */}
           <Text 
           numberOfLines={4} 
           style={{ color: color.Orange, fontFamily: font.InterBlack, fontSize: 12 }}
           onPress={() => navigation.navigate("AnimeInfo", { anime: animeData })}
           >{AnimeTitle}</Text>
 
-
+          {/* episode Number and Title */}
           <View style={{ flexDirection: "row", paddingVertical: 5, paddingHorizontal: 5, }}>
             <Text style={{ color: color.White, fontFamily: font.InterMedium, fontSize: 16, }}>Episode {episodeNum}</Text>
             <Text style={{ color: color.White, fontFamily: font.PoppinsLight, fontSize: 14, flex: 1, paddingHorizontal: 5, }}>{episodeTitle}</Text>
           </View>
-
-          {/* <View style={{ borderBottomColor: color.White, borderBottomWidth: 0.2, marginTop: 20 }}></View> */}
-          <View style={{ flexDirection: "row", justifyContent:episodeNum >1?"space-between": "flex-end", marginTop: 5,position:"relative"}}>
+          {/* next/Prev/share Buttons */}
+          <View style={{ flexDirection: "row", justifyContent:"space-between", marginTop: 5,position:"relative", minHeight:25}}>
+            <View style={{justifyContent:"center", alignItems:"center", flex:1}}>
             {
-              episodeNum > 1 && 
-              <TouchableOpacity style={styles.Mybtns}>
-                <Text style={{ color: color.Orange, fontFamily: font.InterBlack }} onPress={handlePrevEpisode}>Previous</Text>
+            
+            episodeNum > 1 && 
+              <TouchableOpacity style={styles.Mybtns} onPress={handlePrevEpisode}>
+                <Text style={{ color: color.Orange, fontFamily: font.InterBlack}} >Previous</Text>
               </TouchableOpacity>
             }
-            <TouchableOpacity 
-            style={{position:"absolute", left:"45%",top:-5, justifyContent:"center", alignItems:"center"}}
-            onPress={handleShare}
-            >
-              <MCIcon name={"share"} size={30} color={"white"}/>
-              <Text style={{color:color.White}}>Share</Text>
-            </TouchableOpacity>
+            </View>
+            <View style={{justifyContent:"center", alignItems:"center", flex:1}}>
+              <TouchableOpacity 
+              onPress={handleShare}>
+                <MCIcon name={"share"} size={30} color={"white"}/>
+                <Text style={{color:color.White}}>Share</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{justifyContent:"center", alignItems:"center", flex:1}}>
             {
               episodeNum < episodes.length &&
               <TouchableOpacity style={styles.Mybtns} onPress={handleNextEpisode}>
-              <Text style={{ color: color.Orange, fontFamily: font.InterBlack }}>Next</Text>
+                <Text style={{ color: color.Orange, fontFamily: font.InterBlack}}>Next</Text>
               </TouchableOpacity>
             }
+            </View>
 
           </View>
+          {/* custom bottom border */}
           <View style={{ borderBottomColor: color.White, borderBottomWidth: 0.2, marginTop: 5 }}></View>
-
           {
             isLoadingEpisode ? (<ActivityIndicator size="large" color={color.Orange} />)
               : (
@@ -377,9 +379,7 @@ const VideoScreen = ({ route, navigation }) => {
                     onScroll={handleScroll}
 
                   />
-                  {/* <Text style={{ color: color.White, textAlign: "center", fontWeight: "bold" }}>...End...</Text> */}
                 </View>
-                // </ScrollView>
               )
           }
         </View>

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { fetchLatestAnime, fetchSources } from '../../Utils/Functions';
 import ThemeColors from '../../Utils/ThemeColors';
@@ -37,16 +37,17 @@ export default function HomeScreen({ navigation }) {
       // console.log("fetchPage: "+page, typeof(page))
       const req = await fetchLatestAnime(page);
       // console.log("req" + req.totalPages + typeof(req.totalPages))
-      setAnime(req.list);
+      setAnime(req?.list);
       setPage(prev => (
         {
           ...prev,
-          totalPage: req.totalPages
+          totalPage: req?.totalPages
         }
       ));
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
       setIsLoading(false);
     }
   }

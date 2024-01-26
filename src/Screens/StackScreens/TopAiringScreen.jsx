@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {fetchTopAiringAnime } from '../../Utils/Functions';
 import ThemeColors from '../../Utils/ThemeColors';
@@ -23,17 +23,18 @@ export default function TopAiringScreen({ navigation }) {
       // console.log("fetchPage: "+page, typeof(page))
       const req = await fetchTopAiringAnime(page);
       // console.log("req" + req.list)
-      setAnime(req.list);
+      setAnime(req?.list);
       // console.log(req.totalPages)
       setPage(prev => (
         {
           ...prev,
-          totalPage: req.totalPages
+          totalPage: req?.totalPages
         }
       ));
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
       setIsLoading(false);
     }
   }, [page.currentPage]);

@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { fetchAnimeBySearch } from '../../Utils/Functions';
+import { fetchAnimeBySearch, filterNUE } from '../../Utils/Functions';
 import ThemeColors from '../../Utils/ThemeColors';
 import AnimeCard from '../../components/AnimeCard';
 import { TextInput } from 'react-native-gesture-handler';
@@ -27,7 +27,7 @@ export default function SearchScreen({navigation}) {
       setIsLoading(true);
       // console.log("fetchPage: "+page, typeof(page))
       const req = await fetchAnimeBySearch(title, page);
-      // console.log("req" + req.list)
+      // console.log(req?.list)
      setAnime(req.list);
      setPage(prev=>(
       {
@@ -37,7 +37,8 @@ export default function SearchScreen({navigation}) {
      ));
      setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
       setIsLoading(false);
     }
   }
@@ -50,7 +51,10 @@ export default function SearchScreen({navigation}) {
   }, []);
 
   useEffect(() => {
-    fetchAnime(debouncedSearch,1);
+    
+    if(filterNUE(debouncedSearch)){
+      fetchAnime(debouncedSearch,1);
+    }
   }, [debouncedSearch])
 
   useEffect(() => {
@@ -94,7 +98,7 @@ export default function SearchScreen({navigation}) {
   if(isLoading && !refreshing){
     content = <ActivityIndicator size="large" color={color.Orange}/>
   }else{
-    content = anime.map((anim) => (
+    content = anime?.map((anim) => (
         <TouchableOpacity  activeOpacity={0.7} key={anim.animeID} onPress={()=>navigation.navigate("AnimeInfo",{anime:anim})}>
           <AnimeCard anime={anim}/>
         </TouchableOpacity>))
@@ -132,10 +136,10 @@ export default function SearchScreen({navigation}) {
             )
           }
           <View style={styles.currentPage}>
-            <Text style={{ color: color.White, fontWeight: "600", fontSize: 20, }}>{page.currentPage}</Text>
+            <Text style={{ color: color.White, fontWeight: "600", fontSize: 20, }}>{page?.currentPage}</Text>
           </View>
           {
-            page.totalPage > 1 && page.currentPage < page.totalPage &&
+            page?.totalPage > 1 && page?.currentPage < page?.totalPage &&
             (<TouchableOpacity style={styles.myBtn} onPress={handleNext} >
               <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>)

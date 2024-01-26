@@ -79,8 +79,8 @@ android {
         applicationId "com.animetech"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.2"
+        versionCode 2
+        versionName "2.1.2"
     }
     signingConfigs {
         release {
