@@ -217,10 +217,27 @@ async function saveGeneratedLink(key, animeId, episodeId, episodeNum, imageUrl, 
     return error
   }
 }
+function setPagesArray(currentPage,totalPage){  
+
+  if(totalPage >8){
+    const pageArray2=[1,2,"..."]
+    for(let i=currentPage; i <=totalPage;i++){
+      pageArray2.push(i)
+    }  
+    return pageArray2
+  }
+  else{
+    const pageArray=[]
+    for(let i=1; i <=totalPage;i++){
+      pageArray.push(i)
+    }
+    return pageArray  
+  }
+}
 
 export {
   fetchSources, getAsynStorageData, storeAsynStorageData, fetchLatestAnime,
   fetchAnimeBySearch, fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchAnimeInfo,
   fetchPopularAnime, getAllAsynStorageData, filterNUE, fetchAnimeByGenre, fetchAnimeMovies,
-  fetchTopAiringAnime, getQueryParams, buildLink, generateDynamicLink,
+  fetchTopAiringAnime, getQueryParams, buildLink, generateDynamicLink,setPagesArray,
 }

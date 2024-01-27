@@ -17,6 +17,11 @@ export const VideoPlayerProvider = ({ children }) => {
         showSettings: false,
         qualities:[],
         showQualitySetting:false,
+        isDoubleTapActive:false,
+        isSeeking:false,
+        isSeekingLeft:false,
+        isSeekingRight:false,
+        totalSeekTime:0,
         showPlaybackRateSetting:false,
         videoResizeMode:"contain",
         currentQuality:{

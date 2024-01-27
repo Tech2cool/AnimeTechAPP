@@ -17,6 +17,7 @@ import ThemeColors from './Utils/ThemeColors';
 import { LanguageProvider } from './Context/LanguageContext';
 import AppNavigator from './Navigation/AppNavigator';
 import { VideoPlayerProvider } from './Context/VideoPlayerContext';
+import { PaginationProvider } from './Context/PaginationContext';
 
 let color = ThemeColors.DARK
 function App() {
@@ -29,9 +30,11 @@ function App() {
         backgroundColor={color.LighterGray2}
       /> */}
       <LanguageProvider>
+      <PaginationProvider>
       <VideoPlayerProvider>
-      <AppNavigator />
+        <AppNavigator />
       </VideoPlayerProvider>
+      </PaginationProvider>
       </LanguageProvider>
     </SafeAreaView>
     </View>

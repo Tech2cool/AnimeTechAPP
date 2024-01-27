@@ -11,7 +11,6 @@ import MyGenrecard from '../../components/MyGenrecard';
 
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
-const clr_code = [color.AccentBlue, color.Orange, color.White, color.AccentGreen, color.Cyan, color.Red]
 const LoadingArray = [<ActivityIndicator size="large" color={color.Orange} />]
 
 const AnimeInfoScreen = ({ route, navigation }) => {

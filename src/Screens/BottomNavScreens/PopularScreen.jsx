@@ -1,8 +1,10 @@
 import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { fetchLatestAnime, fetchPopularAnime, fetchSources } from '../../Utils/Functions';
+import { fetchLatestAnime, fetchPopularAnime, fetchSources, setPagesArray } from '../../Utils/Functions';
 import ThemeColors from '../../Utils/ThemeColors';
 import AnimeCard from '../../components/AnimeCard';
+import Pagination from '../../components/Pagination';
+import { usePagination } from '../../Context/PaginationContext';
 
 const color = ThemeColors.DARK;
 export default function PopularScreen({navigation}) {
@@ -10,17 +12,17 @@ export default function PopularScreen({navigation}) {
   const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-
-  const [page, setPage] = useState({
-    currentPage: 1,
-    totalPage: 1,
-    availPages:[],
-  });
+  const {myPage, setMyPage} = usePagination();
+  // const [myPage, setMyPage] = useState({
+  //   currentPage: 1,
+  //   totalPage: 1,
+  //   availPages:[],
+  // });
   
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchAnime(1);
-    setPage(prev=>({
+    setMyPage(prev=>({
       ...prev,
       currentPage:1,
     }))
@@ -38,10 +40,11 @@ export default function PopularScreen({navigation}) {
       const req = await fetchPopularAnime(page);
       // console.log("req" + req.totalPages + typeof(req.totalPages))
      setAnime(req?.list);
-     setPage(prev=>(
+     setMyPage(prev=>(
       {
         ...prev,
-        totalPage:req?.totalPages
+        totalPage:req?.totalPages,
+        availPages: setPagesArray(myPage.currentPage, req?.totalPages)
        }
      ));
      setIsLoading(false);
@@ -54,50 +57,13 @@ export default function PopularScreen({navigation}) {
 
   useEffect(() => {
     fetchAnime(1);
-    setPage(prev=>({
+    setMyPage(prev=>({
       ...prev,
       currentPage:1,
     }))
     // console.log("called");
   }, [])
-  useEffect(() => {
-    // console.log(typeof({page:page.currentPage}));
-    // console.log(typeof("tpage" + page.totalPage));
-    const avPages=[];
-    for(let i= 1; i<=page.totalPage; i++){
-      avPages.push(i);
-    }
-    setPage(prev=>({
-      ...prev,
-      availPages:avPages,
-    }))
-    // console.log("avail:" + avPages)
-  }, [page.totalPage])
 
-  const handlePrevious = ()=>{
-    if(page.currentPage <=1) return;
-    // console.log("prev")
-    fetchAnime(page.currentPage - 1);
-    setPage(prev=>(
-      {
-        ...prev,
-        currentPage:page.currentPage - 1,
-       }
-    )) 
-  }
-  const handleNext = ()=>{
-    if(page.currentPage >= page.totalPage) return;
-    
-    // console.log("Next")
-    // console.log("Next: "+ page.currentPage + typeof(page.currentPage))
-    fetchAnime(page.currentPage + 1)
-    setPage(prev=>(
-      {
-        ...prev,
-        currentPage:page.currentPage + 1,
-       }
-    ))
-  }
   if(isLoading && !refreshing){
     content = <ActivityIndicator size="large" color={color.Orange}/>
   }else{
@@ -116,24 +82,9 @@ export default function PopularScreen({navigation}) {
     }>
       <View style={styles.mcontainer}>
         {content}
-        <View style={styles.BtnContainer}>
-          {
-            page.totalPage > 1 && page.currentPage > 1 && (
-              <TouchableOpacity style={styles.myBtn} onPress={handlePrevious} >
-                <Text style={styles.buttonText}>Previous</Text>
-              </TouchableOpacity>
-            )
-          }
-          <View style={styles.currentPage}>
-            <Text style={{ color: color.White, fontWeight: "600", fontSize: 20, }}>{page.currentPage}</Text>
-          </View>
-          {
-            page.totalPage > 1 && page.currentPage < page.totalPage &&
-            (<TouchableOpacity style={styles.myBtn} onPress={handleNext} >
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>)
-          }
-        </View>
+
+        <Pagination fetchAnime={fetchAnime}/>
+
       </View>
     </ScrollView>
   );

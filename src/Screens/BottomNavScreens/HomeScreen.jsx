@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { fetchLatestAnime, fetchSources } from '../../Utils/Functions';
+import { fetchLatestAnime, setPagesArray } from '../../Utils/Functions';
 import ThemeColors from '../../Utils/ThemeColors';
 import AnimeCard from '../../components/AnimeCard';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Pagination from '../../components/Pagination';
+import { usePagination } from '../../Context/PaginationContext';
 
 const color = ThemeColors.DARK;
 export default function HomeScreen({ navigation }) {
@@ -10,17 +13,18 @@ export default function HomeScreen({ navigation }) {
   const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const {myPage, setMyPage} = usePagination();
 
-  const [page, setPage] = useState({
-    currentPage: 1,
-    totalPage: 1,
-    availPages: [],
-  });
+  // const [myPage, setMyPage] = useState({
+  //   currentPage: 1,
+  //   totalPage: 1,
+  //   availPages: [],
+  // });
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchAnime(1);
-    setPage(prev => ({
+    setMyPage(prev => ({
       ...prev,
       currentPage: 1,
     }))
@@ -30,23 +34,18 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   let content;
-
-  const fetchAnime = async (page) => {
+  const fetchAnime = async (pagee) => {
     try {
       setIsLoading(true);
-      // console.log("fetchPage: "+page, typeof(page))
-      const req = await fetchLatestAnime(page);
-      // console.log("req" + req.totalPages + typeof(req.totalPages))
+      const req = await fetchLatestAnime(pagee);
       setAnime(req?.list);
-      setPage(prev => (
-        {
+      setMyPage(prev => ({
           ...prev,
-          totalPage: req?.totalPages
-        }
-      ));
+          totalPage: req?.totalPages,
+          availPages: setPagesArray(myPage.currentPage, req?.totalPages)
+        }));
       setIsLoading(false);
     } catch (error) {
-      // console.log(error);
       ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
       setIsLoading(false);
     }
@@ -54,51 +53,12 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     fetchAnime(1);
-    setPage(prev => ({
+    setMyPage(prev => ({
       ...prev,
       currentPage: 1,
     }))
-
-    // console.log("called");
   }, [])
-  useEffect(() => {
-    // console.log(typeof({page:page.currentPage}));
-    // console.log(typeof("tpage" + page.totalPage));
-    const avPages = [];
-    for (let i = 1; i <= page.totalPage; i++) {
-      avPages.push(i);
-    }
-    setPage(prev => ({
-      ...prev,
-      availPages: avPages,
-    }))
-    // console.log("avail:" + avPages)
-  }, [page.totalPage])
 
-  const handlePrevious = () => {
-    if (page.currentPage <= 1) return;
-    // console.log("prev")
-    fetchAnime(page.currentPage - 1);
-    setPage(prev => (
-      {
-        ...prev,
-        currentPage: page.currentPage - 1,
-      }
-    ))
-  }
-  const handleNext = () => {
-    if (page.currentPage >= page.totalPage) return;
-
-    // console.log("Next")
-    // console.log("Next: "+ page.currentPage + typeof(page.currentPage))
-    fetchAnime(page.currentPage + 1)
-    setPage(prev => (
-      {
-        ...prev,
-        currentPage: page.currentPage + 1,
-      }
-    ))
-  }
   if (isLoading && !refreshing) {
     content = <ActivityIndicator size="large" color={color.Orange} />
   } else {
@@ -118,24 +78,7 @@ export default function HomeScreen({ navigation }) {
       }>
       <View style={styles.mcontainer}>
         {content}
-        <View style={styles.BtnContainer}>
-          {
-            page.totalPage > 1 && page.currentPage > 1 && (
-              <TouchableOpacity style={styles.myBtn} onPress={handlePrevious} >
-                <Text style={styles.buttonText}>Previous</Text>
-              </TouchableOpacity>
-            )
-          }
-          <View style={styles.currentPage}>
-            <Text style={{ color: color.White, fontWeight: "600", fontSize: 20, }}>{page.currentPage}</Text>
-          </View>
-          {
-            page.totalPage > 1 && page.currentPage < page.totalPage &&
-            (<TouchableOpacity style={styles.myBtn} onPress={handleNext} >
-              <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>)
-          }
-        </View>
+      <Pagination fetchAnime={fetchAnime}/>
       </View>
     </ScrollView>
   );
@@ -170,16 +113,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   myBtn: {
-    paddingVertical: 18,
-    // width: 100,
-    // height: 200,
-    flex: 1,
-    paddingHorizontal: 24,
+    paddingVertical: 5,
+    // flex: 1,
+    paddingHorizontal: 8,
     backgroundColor: '#3498db',
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  myBtn2: {
+    // paddingVertical: 5,
+    // padding: 5,
+    // flex: 1,
+    // paddingHorizontal: 5,
+    backgroundColor: '#3498db',
+    // borderRadius: 8,
+    // gap:5,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+
   buttonText: {
     color: '#fff',
     fontSize: 16,
