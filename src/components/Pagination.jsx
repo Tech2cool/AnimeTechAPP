@@ -1,28 +1,9 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
-import ThemeColors from '../Utils/ThemeColors'
-import { usePagination } from '../Context/PaginationContext';
-import { filterNUE } from '../Utils/Functions';
+import React from 'react'
+import {ThemeColors} from '../Utils'
 
 const color = ThemeColors.DARK;
-
-const Pagination = ({ fetchAnime, title = "", search = false }) => {
-  // const [myPage, setMyPage] = useState({
-  //   currentPage: 1,
-  //   totalPage: fetchedTotalPage,
-  //   availPages:[],
-  // });
-  const { myPage, setMyPage } = usePagination();
-  useEffect(() => {
-    if (search === true && filterNUE(title) === false) {
-      setMyPage(prev => ({
-        ...prev,
-        currentPage: 1,
-        totalPage: 1,
-        availPages: [],
-      }))
-    }
-  }, [])
+const Pagination = ({ myPage, setMyPage, fetchAnime, title = "", search = false }) => {
 
   const handlePagination = (page, index = 0) => {
     if (page === "...") {
@@ -72,7 +53,7 @@ const Pagination = ({ fetchAnime, title = "", search = false }) => {
               key={i}
               style={{
                 borderRadius: 50,
-                backgroundColor: myPage.currentPage === pg ? '#3498db' : undefined,
+                backgroundColor: myPage.currentPage === pg ? color.AccentBlue : undefined,
                 width: 25,
                 height: 25,
                 justifyContent: "center",
@@ -80,7 +61,7 @@ const Pagination = ({ fetchAnime, title = "", search = false }) => {
               }}
               onPress={() => handlePagination(pg, i)} >
               <Text style={{
-                color: '#fff',
+                color: color.White,
                 fontSize: 15,
                 fontWeight: 'bold',
                 textAlign: 'center',
@@ -91,10 +72,6 @@ const Pagination = ({ fetchAnime, title = "", search = false }) => {
         }
 
       </View>
-
-      {/* <View style={styles.currentPage}>
-      <Text style={{ color: color.White, fontWeight: "600", fontSize: 20, }}>{myPage.currentPage}</Text>
-    </View> */}
       {
         myPage.totalPage > 1 && myPage.currentPage < myPage.totalPage &&
         (<TouchableOpacity

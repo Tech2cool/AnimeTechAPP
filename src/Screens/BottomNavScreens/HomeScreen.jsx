@@ -1,11 +1,9 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { fetchLatestAnime, setPagesArray } from '../../Utils/Functions';
 import ThemeColors from '../../Utils/ThemeColors';
 import AnimeCard from '../../components/AnimeCard';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Pagination from '../../components/Pagination';
-import { usePagination } from '../../Context/PaginationContext';
 
 const color = ThemeColors.DARK;
 export default function HomeScreen({ navigation }) {
@@ -13,13 +11,12 @@ export default function HomeScreen({ navigation }) {
   const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const {myPage, setMyPage} = usePagination();
 
-  // const [myPage, setMyPage] = useState({
-  //   currentPage: 1,
-  //   totalPage: 1,
-  //   availPages: [],
-  // });
+  const [myPage, setMyPage] = useState({
+    currentPage: 1,
+    totalPage: 1,
+    availPages: [],
+  });
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -41,6 +38,7 @@ export default function HomeScreen({ navigation }) {
       setAnime(req?.list);
       setMyPage(prev => ({
           ...prev,
+          currentPage: pagee,
           totalPage: req?.totalPages,
           availPages: setPagesArray(myPage.currentPage, req?.totalPages)
         }));
@@ -78,7 +76,7 @@ export default function HomeScreen({ navigation }) {
       }>
       <View style={styles.mcontainer}>
         {content}
-      <Pagination fetchAnime={fetchAnime}/>
+      <Pagination myPage={myPage} setMyPage={setMyPage} fetchAnime={fetchAnime}/>
       </View>
     </ScrollView>
   );

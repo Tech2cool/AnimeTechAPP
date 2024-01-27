@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Dimensions, FlatList, Button, ToastAndroid } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import ThemeColors from '../../Utils/ThemeColors';
-import { fetchAnimeInfo, fetchEpisodeDetailsFromKitsu, fetchEpisodes, filterNUE } from '../../Utils/Functions';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { fetchAnimeInfo, fetchEpisodes, filterNUE } from '../../Utils/Functions';
+import {ThemeColors, IIcon, MCIcon} from '../../Utils';
 import { useLanguage } from '../../Context/LanguageContext';
-import EpisodeCard from '../../components/EpisodeCard';
-import IIcon from 'react-native-vector-icons/Ionicons';
+import {EpisodeCard, MyGenrecard} from '../../components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MyGenrecard from '../../components/MyGenrecard';
 
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;

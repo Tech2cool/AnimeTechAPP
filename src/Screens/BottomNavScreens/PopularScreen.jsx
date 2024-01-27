@@ -1,10 +1,8 @@
-import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { fetchLatestAnime, fetchPopularAnime, fetchSources, setPagesArray } from '../../Utils/Functions';
-import ThemeColors from '../../Utils/ThemeColors';
-import AnimeCard from '../../components/AnimeCard';
-import Pagination from '../../components/Pagination';
-import { usePagination } from '../../Context/PaginationContext';
+import {fetchPopularAnime, setPagesArray } from '../../Utils/Functions';
+import {ThemeColors} from '../../Utils';
+import {Pagination, AnimeCard} from '../../components';
 
 const color = ThemeColors.DARK;
 export default function PopularScreen({navigation}) {
@@ -12,12 +10,11 @@ export default function PopularScreen({navigation}) {
   const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const {myPage, setMyPage} = usePagination();
-  // const [myPage, setMyPage] = useState({
-  //   currentPage: 1,
-  //   totalPage: 1,
-  //   availPages:[],
-  // });
+  const [myPage, setMyPage] = useState({
+    currentPage: 1,
+    totalPage: 1,
+    availPages:[],
+  });
   
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -43,6 +40,7 @@ export default function PopularScreen({navigation}) {
      setMyPage(prev=>(
       {
         ...prev,
+        currentPage:page,
         totalPage:req?.totalPages,
         availPages: setPagesArray(myPage.currentPage, req?.totalPages)
        }
@@ -83,7 +81,7 @@ export default function PopularScreen({navigation}) {
       <View style={styles.mcontainer}>
         {content}
 
-        <Pagination fetchAnime={fetchAnime}/>
+        <Pagination myPage={myPage} setMyPage={setMyPage} fetchAnime={fetchAnime}/>
 
       </View>
     </ScrollView>

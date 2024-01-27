@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { fetchAnimeByGenre, fetchAnimeMovies, setPagesArray } from '../../Utils/Functions';
-import ThemeColors from '../../Utils/ThemeColors';
-import AnimeCard from '../../components/AnimeCard';
-import IIcon from 'react-native-vector-icons/Ionicons';
-import { MoviesSort } from "../../Utils/contstant"
 import SelectDropdown from 'react-native-select-dropdown'
-import { usePagination } from '../../Context/PaginationContext';
-import Pagination from '../../components/Pagination';
+import {fetchAnimeMovies, setPagesArray } from '../../Utils/Functions';
+import {Pagination, AnimeCard} from '../../components';
+import { MoviesSort } from "../../Utils/contstant"
+import {ThemeColors, IIcon} from '../../Utils';
 
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
@@ -17,13 +14,24 @@ export default function MovieScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState("");
   const [refreshing, setRefreshing] = useState(false);
-  const { myPage, setMyPage } = usePagination();
-
   let content;
+  const [myPage, setMyPage] = useState({
+    currentPage: 1,
+    totalPage: 1,
+    availPages: [],
+  });
+
 
   useEffect(() => {
     memoizedAnimes(selected, 1)
   }, [selected]);
+
+  useEffect(() => {
+    setMyPage(prev => ({
+      ...prev,
+      currentPage: 1,
+    }))
+  }, [])
 
   const memoizedAnimes = useMemo(() => async (alphabet, page) => {
     try {
@@ -101,6 +109,8 @@ export default function MovieScreen({ navigation }) {
         </View>
         {content}
         <Pagination
+          myPage={myPage} 
+          setMyPage={setMyPage}        
           fetchAnime={memoizedAnimes}
           title={selected}
           search={true}

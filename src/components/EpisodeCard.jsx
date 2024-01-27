@@ -6,6 +6,7 @@ import { useLanguage } from '../Context/LanguageContext';
 import { filterNUE } from '../Utils/Functions';
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
+
 const EpisodeCard  = memo(({episode, anime, currentEpisode}) =>{
   const{currentLang}=useLanguage();
     // console.log(currentEpisode)

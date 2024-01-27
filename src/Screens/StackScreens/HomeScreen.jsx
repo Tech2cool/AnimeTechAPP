@@ -1,7 +1,7 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
 import BottomTabNavigation from '../../Navigation/BottomTabNavigation';
-import ThemeColors from '../../Utils/ThemeColors';
+import {ThemeColors} from '../../Utils';
 
 const color= ThemeColors.DARK
 export default function HomeScreen() {

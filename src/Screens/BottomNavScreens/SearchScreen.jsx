@@ -1,14 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Button, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, RefreshControl, ToastAndroid } from 'react-native';
+import { 
+  View, StyleSheet, ScrollView, TouchableOpacity, 
+  TextInput, ActivityIndicator, KeyboardAvoidingView, 
+  RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { fetchAnimeBySearch, filterNUE, setPagesArray } from '../../Utils/Functions';
-import ThemeColors from '../../Utils/ThemeColors';
-import AnimeCard from '../../components/AnimeCard';
-import { TextInput } from 'react-native-gesture-handler';
-import useDebounce from '../../components/useDebounce';
-import IIcon from 'react-native-vector-icons/Ionicons';
-import Pagination from '../../components/Pagination';
-import { usePagination } from '../../Context/PaginationContext';
-import { useFocusEffect } from '@react-navigation/native';
+import { Pagination, useDebounce, AnimeCard } from '../../components';
+import { ThemeColors, IIcon } from '../../Utils';
 
 const color = ThemeColors.DARK;
 export default function SearchScreen({ navigation }) {
@@ -16,12 +13,11 @@ export default function SearchScreen({ navigation }) {
   const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [myInput, setMyInput] = useState("");
-  // const [myPage, setMyPage] = useState({
-  //   currentPage: 1,
-  //   totalPage: 1,
-  //   availPages:[],
-  // });
-  const { myPage, setMyPage } = usePagination();
+  const [myPage, setMyPage] = useState({
+    currentPage: 1,
+    totalPage: 1,
+    availPages:[],
+  });
 
   const [refreshing, setRefreshing] = useState(false);
   const debouncedSearch = useDebounce(myInput, 500);
@@ -37,7 +33,7 @@ export default function SearchScreen({ navigation }) {
       setMyPage(prev => (
         {
           ...prev,
-          currentPage:page,
+          currentPage: page,
           totalPage: req?.totalPages,
           availPages: setPagesArray(myPage.currentPage, req?.totalPages)
         }
@@ -58,12 +54,18 @@ export default function SearchScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
+    setMyPage(prev => ({
+      ...prev,
+      currentPage: 1,
+    }))
+  }, [])
+
+  useEffect(() => {
     if (filterNUE(debouncedSearch)) {
       fetchAnime(debouncedSearch, 1);
     }
     // console.log("searched")
   }, [debouncedSearch])
-
   if (isLoading && !refreshing) {
     content = <ActivityIndicator size="large" color={color.Orange} />
   } else {
@@ -98,6 +100,8 @@ export default function SearchScreen({ navigation }) {
         </KeyboardAvoidingView>
         {content}
         <Pagination
+          myPage={myPage} 
+          setMyPage={setMyPage}
           fetchAnime={fetchAnime}
           title={myInput}
           search={true}

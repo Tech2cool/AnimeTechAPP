@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from 'react'
 import Video from "react-native-video";
 import Orientation from 'react-native-orientation-locker';
 import { useNavigation } from '@react-navigation/native';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import VideoControls from './VideoControls';
 import { getAsynStorageData, storeAsynStorageData } from '../Utils/Functions';
 import { useVideoPlayer } from '../Context/VideoPlayerContext';

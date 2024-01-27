@@ -1,61 +1,15 @@
-import { View, Text, StatusBar, Linking } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, StatusBar } from 'react-native'
+import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import Splash from '../Screens/StackScreens/Splash';
-import HomeScreen from '../Screens/StackScreens/HomeScreen';
-import VideoScreen from '../Screens/StackScreens/VideoScreen';
-import { LanguageProvider } from '../Context/LanguageContext';
-import AnimeInfoScreen from '../Screens/StackScreens/AnimeInfoScreen';
-import { useVideoPlayer } from '../Context/VideoPlayerContext';
-import WatchListScreen from '../Screens/StackScreens/WatchListScreen';
-import GenreScreen from "../Screens/StackScreens/GenreScreen"
-import ThemeColors from '../Utils/ThemeColors';
-import MovieScreen from '../Screens/StackScreens/MovieScreen';
-import TopAiringScreen from '../Screens/StackScreens/TopAiringScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import {ThemeColors} from '../Utils';
 import Testing from '../Screens/StackScreens/Testing';
 import SetLinks from '../Screens/StackScreens/SetLinks';
-import { getQueryParams } from '../Utils/Functions';
-
+import {Splash, HomeScreen, VideoScreen, AnimeInfoScreen, 
+        WatchListScreen, GenreScreen, MovieScreen, TopAiringScreen} from "../Screens/StackScreens"
 const Stack = createStackNavigator();
 const color = ThemeColors.DARK
 const AppNavigator = () => {
-  // const deepLinking = {
-  //   prefixes:["https:animeTech.app", "animeTech://"],
-  //   config:{
-  //     Home:"Testing",
-  //     Details:{
-  //       path:"Testing",
-  //       params:{
-  //         id:null
-  //       }
-  //     }
-  //   }
-  // }
-  // const linking = {
-  //   prefixes: ['https://ani-short.vercel.app', 'animeTech://'],
-  //   config: {
-  //     screens: {
-  //       Testing:{
-  //         path:'testing/:id',
-  //       },
-  //       SetLinks:{
-  //         path:'SetLinks',
-  //       },
-  //       video:{
-  //         path:'video/:animeId/:oneEpisode',
-  //         // parse: {
-  //         //   oneEpisode: (serializedObject) => JSON.parse(decodeURIComponent(serializedObject)),
-  //         // },
-  //         // stringify: {
-  //         //   oneEpisode: (oneEpisode) => JSON.stringify(oneEpisode),
-  //         // },
-  
-  //       }
-  //     },
-  //   },
-  // };
-  
     return (
     <NavigationContainer>
       <View style={{backgroundColor:"black", flex:1}}>

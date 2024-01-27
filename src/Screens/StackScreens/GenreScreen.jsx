@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, ToastAndroid } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { fetchAnimeByGenre, setPagesArray } from '../../Utils/Functions';
-import ThemeColors from '../../Utils/ThemeColors';
-import AnimeCard from '../../components/AnimeCard';
-import IIcon from 'react-native-vector-icons/Ionicons';
-import { Genres } from "../../Utils/contstant"
 import SelectDropdown from 'react-native-select-dropdown'
-import { usePagination } from '../../Context/PaginationContext';
-import Pagination from '../../components/Pagination';
+import {Pagination, AnimeCard} from '../../components';
+import {ThemeColors, IIcon} from '../../Utils';
+import { Genres } from "../../Utils/contstant"
 
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
@@ -17,12 +14,25 @@ export default function GenreScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = React.useState("isekai");
   const [refreshing, setRefreshing] = useState(false);
-  const { myPage, setMyPage } = usePagination();
+  // const { myPage, setMyPage } = usePagination();
+  const [myPage, setMyPage] = useState({
+    currentPage: 1,
+    totalPage: 1,
+    availPages: [],
+  });
+
   let content;
 
   useEffect(() => {
     memoizedAnimes(selected, 1)
   }, [selected]);
+  
+  useEffect(() => {
+    setMyPage(prev => ({
+      ...prev,
+      currentPage: 1,
+    }))
+  }, [])
 
 
   const memoizedAnimes = useMemo(() => async (genre, page) => {
@@ -108,6 +118,8 @@ export default function GenreScreen({ navigation }) {
         </View>
         {content}
         <Pagination
+          myPage={myPage} 
+          setMyPage={setMyPage}
           fetchAnime={memoizedAnimes}
           title={selected}
           search={true}

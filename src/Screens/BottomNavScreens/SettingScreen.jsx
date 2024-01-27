@@ -1,9 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React, { useEffect } from 'react'
-import ThemeColors from '../../Utils/ThemeColors'
-
-import IIcon from 'react-native-vector-icons/Ionicons';
-import MIcon from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import {ThemeColors,IIcon, MIcon} from '../../Utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const color = ThemeColors.DARK;
