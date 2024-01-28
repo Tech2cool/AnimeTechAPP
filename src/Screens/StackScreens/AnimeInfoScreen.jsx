@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, Dimensions, FlatList, Button, ToastAndroid } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { fetchAnimeInfo, fetchEpisodes, filterNUE } from '../../Utils/Functions';
+import { fetchAnimeInfo, fetchEpisodes, isValidData } from '../../Utils/Functions';
 import {ThemeColors, IIcon, MCIcon} from '../../Utils';
 import { useLanguage } from '../../Context/LanguageContext';
 import {EpisodeCard, MyGenrecard} from '../../components';
@@ -98,7 +98,7 @@ const AnimeInfoScreen = ({ route, navigation }) => {
         <View style={{ flex: 1, flexWrap: "wrap", flexDirection: "row", columnGap: 2, rowGap: 5 }}>
           <MyGenrecard Title={`TotalEpisodes: ${animeInfo?.totalEpisodes}`} />
           <MyGenrecard Title={`Status: ${animeInfo?.status}`} />
-          <MyGenrecard Title={`Year: ${filterNUE(anime?.year)?anime?.year:anime?.AdditionalInfo?.startDate?.split("-")[0]}`} />
+          <MyGenrecard Title={`Year: ${isValidData(anime?.year)?anime?.year:anime?.AdditionalInfo?.startDate?.split("-")[0]}`} />
           <MyGenrecard Title={`${anime?.AdditionalInfo?.ageRating + " " + anime?.AdditionalInfo?.ageRatingGuide}`} />
           <MyGenrecard Title={`${animeInfo?.type}`} />
         </View>
@@ -109,7 +109,7 @@ const AnimeInfoScreen = ({ route, navigation }) => {
         </View>
         {/* Description */}
         <View style={{ flex: 1, padding: 5 }}>
-          <Text numberOfLines={showMore ? undefined : 4} style={{ color: color.LightGray }}>{filterNUE(animeInfo?.synopsis)?animeInfo?.synopsis:anime?.AdditionalInfo?.description}</Text>
+          <Text numberOfLines={showMore ? undefined : 4} style={{ color: color.LightGray }}>{isValidData(animeInfo?.synopsis)?animeInfo?.synopsis:anime?.AdditionalInfo?.description}</Text>
           <TouchableOpacity style={{
             flex: 0, alignSelf: "center", color: color.White,
             backgroundColor: color.White,

@@ -1,13 +1,14 @@
 import { 
   View, StyleSheet, ScrollView, TouchableOpacity, 
   TextInput, ActivityIndicator, KeyboardAvoidingView, 
-  RefreshControl, ToastAndroid } from 'react-native';
+  RefreshControl, ToastAndroid,Text } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { fetchAnimeBySearch, filterNUE, setPagesArray } from '../../Utils/Functions';
+import { fetchAnimeBySearch, isValidData, setPagesArray } from '../../Utils/Functions';
 import { Pagination, useDebounce, AnimeCard } from '../../components';
 import { ThemeColors, IIcon } from '../../Utils';
 
 const color = ThemeColors.DARK;
+const font = ThemeColors.FONT;
 export default function SearchScreen({ navigation }) {
 
   const [anime, setAnime] = useState([]);
@@ -61,7 +62,7 @@ export default function SearchScreen({ navigation }) {
   }, [])
 
   useEffect(() => {
-    if (filterNUE(debouncedSearch)) {
+    if (isValidData(debouncedSearch)) {
       fetchAnime(debouncedSearch, 1);
     }
     // console.log("searched")
@@ -98,14 +99,30 @@ export default function SearchScreen({ navigation }) {
           />
           <IIcon name={"search"} size={30} color={color.Orange} onPress={() => fetchAnime(debouncedSearch, 1)} />
         </KeyboardAvoidingView>
-        {content}
-        <Pagination
-          myPage={myPage} 
-          setMyPage={setMyPage}
-          fetchAnime={fetchAnime}
-          title={myInput}
-          search={true}
-        />
+
+        {
+          myInput ===""?(
+            <>
+            <Text style={{color:color.White, textAlign:"center", fontFamily:font.OpenSansBold, marginVertical:10}}>Search Anime example: Solo Leveling</Text>
+            <Text style={{color:color.White, textAlign:"center", fontFamily:font.OpenSansBold}}>Nothing to see here...</Text>
+            </>
+          ):(
+            <>
+            {content}
+            <Pagination
+              myPage={myPage} 
+              setMyPage={setMyPage}
+              fetchAnime={fetchAnime}
+              title={myInput}
+              search={true}
+              />
+            </>
+          )
+        }
+        {
+          (anime.length===0 && myInput !=="" && !isLoading) &&
+          <Text style={{color:color.White, textAlign:"center", fontFamily:font.OpenSansBold, marginVertical:10}}>Anime Not Found</Text>
+        }
       </View>
     </ScrollView>
   );

@@ -44,6 +44,7 @@ const Splash = ({ navigation }) => {
       }
     }else{
       // console.log("not matched");
+      // navigation.navigate("HomeStack");
       navigation.navigate("HomeStack");
     }
   };

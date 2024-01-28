@@ -3,7 +3,7 @@ import React, { memo, useMemo } from 'react'
 
 import ThemeColors from '../Utils/ThemeColors'
 import { useLanguage } from '../Context/LanguageContext';
-import { filterNUE } from '../Utils/Functions';
+import { isValidData } from '../Utils/Functions';
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
 
@@ -25,7 +25,7 @@ const EpisodeCard  = memo(({episode, anime, currentEpisode}) =>{
         status = episode?.AdditionalInfo?.status
     }
     let Poster=anime?.animeImg;
-    if(filterNUE(episode?.thumbnail)){
+    if(isValidData(episode?.thumbnail)){
         Poster= episode?.thumbnail
         // console.log(episode.thumbnail)
     }
@@ -36,7 +36,7 @@ const EpisodeCard  = memo(({episode, anime, currentEpisode}) =>{
         <Image style={styles.Img} source={{uri:Poster}}/>
         <View style={styles.Info}>
             {
-                filterNUE(AnimeTitle) && <Text style={parseInt(currentEpisode) === episode?.number? styles.TitleActive:styles.Title}>{AnimeTitle}</Text>
+                isValidData(AnimeTitle) && <Text style={parseInt(currentEpisode) === episode?.number? styles.TitleActive:styles.Title}>{AnimeTitle}</Text>
             }
             <Text style={parseInt(currentEpisode) === episode?.number? styles.EpisodeActive:styles.Episode}>Episode {episode?.number}</Text>
             <Text style={parseInt(currentEpisode) === episode?.number? styles.statusActive:styles.status}>{episode?.hasDub ===true? "dub": "sub"}</Text>

@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { memo } from 'react'
 import ThemeColors from '../Utils/ThemeColors';
 const color = ThemeColors.DARK;
 const clr_code = [color.AccentBlue, color.Orange, color.AccentGreen, color.Cyan, color.Red]
 
-const MyGenrecard = ({Title}) => {
+const MyGenrecard = memo(({Title}) => {
   return (
     <View style={{
         borderColor:clr_code[Math.floor(Math.random() * 5)], 
@@ -18,6 +18,6 @@ const MyGenrecard = ({Title}) => {
         <Text style={{color:color.White}}>{Title}</Text>
       </View>
     )
-}
+})
 
 export default MyGenrecard

@@ -7,6 +7,8 @@ import Testing from '../Screens/StackScreens/Testing';
 import SetLinks from '../Screens/StackScreens/SetLinks';
 import {Splash, HomeScreen, VideoScreen, AnimeInfoScreen, 
         WatchListScreen, GenreScreen, MovieScreen, TopAiringScreen} from "../Screens/StackScreens"
+// import HomeScreen2 from '../Screens/BottomNavScreens/HomeScreen2';
+import Recent from '../Screens/StackScreens/Recent';
 const Stack = createStackNavigator();
 const color = ThemeColors.DARK
 const AppNavigator = () => {
@@ -24,6 +26,15 @@ const AppNavigator = () => {
                 name="HomeStack"
                 component={HomeScreen}
                 options={{headerShown: false}}
+            />
+            <Stack.Screen 
+                name="Recent"
+                component={Recent}
+                options={{headerShown: true,
+                  headerTintColor:color.White,
+                  headerStyle:{
+                  backgroundColor:color.DarkBackGround,
+                }}}
             />
           <Stack.Screen 
                 name="Video" 

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../Screens/BottomNavScreens/HomeScreen';
+import HomeScreen from '../Screens/BottomNavScreens/HomeScreen3';
 import SettingScreen from '../Screens/BottomNavScreens/SettingScreen';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +11,7 @@ import SearchScreen from '../Screens/BottomNavScreens/SearchScreen';
 import PopularScreen from '../Screens/BottomNavScreens/PopularScreen';
 import ThemeColors from '../Utils/ThemeColors';
 import HomeTopbar from '../components/Topbar/HomeTopbar';
+import HomeScreen2 from '../Screens/BottomNavScreens/HomeScreen2';
 
 const Tab = createBottomTabNavigator();
 const color = ThemeColors.DARK  
@@ -43,11 +44,24 @@ export default function BottomTabNavigation() {
           marginBottom:2,
         }
     }}
+    initialRouteName='HomeScreen'
     >
         
-      <Tab.Screen 
+      {/* <Tab.Screen 
       name="Home" 
       component={HomeScreen}
+      color={color.DarkGray}
+      
+        options={{
+          tabBarLabel:"Home",
+          tabBarIcon: ({color, size})=>(
+            <MIcon name="home" size={size} color={color} />
+          ),
+        }}
+      /> */}
+      <Tab.Screen 
+      name="HomeScreen" 
+      component={HomeScreen2}
       color={color.DarkGray}
       
         options={{

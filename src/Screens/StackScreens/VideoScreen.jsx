@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, ActivityIndicator, Image, TouchableOpacity, FlatList, Dimensions, ToastAndroid, Share } from 'react-native'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import ThemeColors from '../../Utils/ThemeColors';
 import VideoPlayerr from '../../components/VideoPlayer';
-import { fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchSources, getAsynStorageData, storeAsynStorageData,filterNUE, buildLink, fetchAnimeInfo, generateDynamicLink, generateDynamicLink2 } from '../../Utils/Functions';
+import { fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchSources, getAsynStorageData, storeAsynStorageData,isValidData, buildLink, fetchAnimeInfo, generateDynamicLink, generateDynamicLink2 } from '../../Utils/Functions';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useVideoPlayer } from '../../Context/VideoPlayerContext';
 import { useLanguage } from '../../Context/LanguageContext';
@@ -11,6 +11,8 @@ import { zIndex } from '../../Utils/contstant';
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
 let watchCout = 1;
+const {height:SCREEN_HIEGHT} = Dimensions.get("window");
+const MAX_TRANSLATE_Y = SCREEN_HIEGHT + 50;
 
 const VideoScreen = ({ route, navigation }) => {
   const { anime, oneEpisode, animeId } = route.params;
@@ -51,9 +53,9 @@ const VideoScreen = ({ route, navigation }) => {
                  (animeData?.animeTitle?.japanese)
   }
 
-  if (filterNUE(kistuEpDetails?.title?.english)||
-    filterNUE(kistuEpDetails?.title?.english_jp)||
-    filterNUE(kistuEpDetails?.title?.japanese)) {
+  if (isValidData(kistuEpDetails?.title?.english)||
+    isValidData(kistuEpDetails?.title?.english_jp)||
+    isValidData(kistuEpDetails?.title?.japanese)) {
     if (currentLang === "en") {
       episodeTitle = " - " + ((kistuEpDetails?.title?.english) || (kistuEpDetails?.title?.english_jp))
     }
@@ -68,13 +70,13 @@ const VideoScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     let eid, eNum;
-    if (filterNUE(oneEpisode?.id)) {
+    if (isValidData(oneEpisode?.id)) {
       eid = oneEpisode?.id
     } else {
       eid = animeData?.episodeId
     }
 
-    if (filterNUE(oneEpisode?.number)) {
+    if (isValidData(oneEpisode?.number)) {
       eNum = oneEpisode?.number
     } else {
       eNum = animeData?.episodeNum
@@ -86,14 +88,14 @@ const VideoScreen = ({ route, navigation }) => {
   }, [animeData?.episodeId, oneEpisode?.id, animeData?.episodeNum, oneEpisode?.number])
 
   useEffect(()=>{
-    if(filterNUE(anime)){
+    if(isValidData(anime)){
       setAnimeData(anime);
       // console.log(anime)
     }
   },[anime])
 
   useEffect(()=>{
-    if(filterNUE(animeId)){
+    if(isValidData(animeId)){
       const fetchAnimeDetailss= async()=>{
         const req = await fetchAnimeInfo(animeId);
         // console.log(req)
@@ -111,10 +113,10 @@ const VideoScreen = ({ route, navigation }) => {
       setSources(req);
       const kitsuReq = await fetchEpisodeDetailsFromKitsu(animeData?.AdditionalInfo?.id, episodeNum);
       setKistuEpDetails(kitsuReq);
-    } catch (error) {
-      ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
-    } finally {
       setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      ToastAndroid.show(`Error: ${error}`, ToastAndroid.SHORT);
     }
   }, [episodeId, episodeNum, animeData]);
 
@@ -245,7 +247,7 @@ const VideoScreen = ({ route, navigation }) => {
     try {
       const getLink = await generateDynamicLink(
         "video",
-        filterNUE(animeData?.animeID)?animeData?.animeID:animeId, 
+        isValidData(animeData?.animeID)?animeData?.animeID:animeId, 
         episodeId, 
         episodeNum, 
         animeData?.animeImg, 
@@ -260,12 +262,16 @@ const VideoScreen = ({ route, navigation }) => {
     }
   }
   const handleGoBack = ()=>{
-    if(filterNUE(animeId)){
+    if(isValidData(animeId)){
       navigation.navigate("HomeStack")
     }else{
       navigation.goBack()
     }
   }
+  const handlePress = (episode) => {
+    handleEpisodeSwtich(episode);
+  };
+  
   if (isLoading) {
     content = <View style={{ minHeight: 180, justifyContent: "center", alignItems: "center", backgroundColor: color.DarkBackGround }}>
       <ActivityIndicator size="large" color={color.Orange} />
@@ -289,15 +295,15 @@ const VideoScreen = ({ route, navigation }) => {
 
   if (videoState.isFullscreen) {
     return (
-      <View style={{ flex: 1, position: "relative", backgroundColor: color.DarkBackGround}}>
+      <View style={[{ flex: 1, position: "relative", backgroundColor: color.DarkBackGround}]}>
         {content}
       </View>
     )
   }
   else {
     return (
-      <View style={{ flex: 1, backgroundColor: color.DarkBackGround, position: "relative",zIndex:zIndex.CENTER }}>
-          {content}
+      <View style={[{ flex: 1, backgroundColor: color.DarkBackGround, position: "relative",zIndex:zIndex.CENTER }]}>
+        {content}
         <View style={[styles.Info,{position:"relative"}]}>
           {/* anime Title */}
           <Text 
@@ -354,6 +360,7 @@ const VideoScreen = ({ route, navigation }) => {
                           <MCIcon name={"arrow-up-bold-circle-outline"} size={40} color={"white"}
                             onPress={() => scrollToEpisode(0)} />
                         }
+                        {/* next/prev buttons */}
                         {
                           currentScrollIndex <= lastIndex - 10 && currentScrollIndex > 0 &&
                           <MCIcon name={"arrow-down-bold-circle-outline"} size={40} color={"white"}
@@ -367,23 +374,24 @@ const VideoScreen = ({ route, navigation }) => {
                   <FlatList
                     ref={flatListRef}
                     data={episodes}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => (
-                      <TouchableOpacity onPress={() => handleEpisodeSwtich(item)}>
+                    keyExtractor={(item, index) => `${item?.animeID}-${index}`}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity onPress={() => handlePress(item)}>
                         <EpisodeCard episode={item} anime={animeData} currentEpisode={episodeNum} />
                       </TouchableOpacity>
                     )}
-                    windowSize={5} // Adjust this value
-                    initialNumToRender={10} // Adjust this value    
+                    
+                    windowSize={5}
+                    initialNumToRender={10}
                     getItemLayout={getItemLayout}
                     onScroll={handleScroll}
-
                   />
                 </View>
               )
           }
         </View>
       </View>
+
     )
   }
 }

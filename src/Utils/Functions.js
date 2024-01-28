@@ -145,7 +145,7 @@ const getAllAsynStorageData = async () => {
     return [];
   }
 };
-function filterNUE(data) {
+function isValidData(data) {
   if (data === null || data === undefined || data === "" || data === "undefined" || data === "null")
     return false
   else return true
@@ -238,6 +238,6 @@ function setPagesArray(currentPage,totalPage){
 export {
   fetchSources, getAsynStorageData, storeAsynStorageData, fetchLatestAnime,
   fetchAnimeBySearch, fetchEpisodeDetailsFromKitsu, fetchEpisodes, fetchAnimeInfo,
-  fetchPopularAnime, getAllAsynStorageData, filterNUE, fetchAnimeByGenre, fetchAnimeMovies,
+  fetchPopularAnime, getAllAsynStorageData, isValidData, fetchAnimeByGenre, fetchAnimeMovies,
   fetchTopAiringAnime, getQueryParams, buildLink, generateDynamicLink,setPagesArray,
 }

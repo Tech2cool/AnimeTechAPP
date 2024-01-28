@@ -1,7 +1,9 @@
 export default{
     DARK:{
-        DarkBackGround:"#262626",
-        DarkBackGround2:"#2d2d30",
+        DarkBackGround:"#171717",
+        // DarkBackGround:"#262626",
+        DarkBackGround2:"#242424",
+        // DarkBackGround2:"#2d2d30",
         Black:"#0b0b0b",
         DarkGray: "#333333",
         LighterGray: "#444444",
@@ -17,17 +19,32 @@ export default{
     },
     FONT:{
     InterBlack:"Inter-Black",
-    RobotoBlack:"Roboto-Black",
-    PoppinsBlack:"Poppins-Black",
-    NunitoBlack:"Nunito-Black",
-    PoppinsMedium:"Poppins-Medium",
-    RobotoMedium:"Roboto-Medium",
     InterMedium:"Inter-Medium",
+    InterLight:"Inter-Light",
+
+    RobotoBlack:"Roboto-Black",
+    RobotoMedium:"Roboto-Medium",
+    RobotoLight:"Roboto-Light",
+
+    PoppinsBlack:"Poppins-Black",
+    PoppinsMedium:"Poppins-Medium",
+    PoppinsLight:"Poppins-Light",
+
+    NunitoBlack:"Nunito-Black",
     NunitoMedium:"Nunito-Medium",
     NunitoLight:"Nunito-Light",
-    RobotoLight:"Roboto-Light",
-    PoppinsLight:"Poppins-Light",
-    InterLight:"Inter-Light",
-    NunitoLight:"Nunito-Light",
+
+    PTSansBold:"PTSans-Bold",
+    PTSansBoldItalic:"PTSans-BoldItalic",
+    PTSansItalic:"PTSans-Italic",
+    PTSansRegular:"PTSans-Regular",
+
+    OpenSansBold:"OpenSans-Bold",
+    OpenSansBoldItalic:"OpenSans-BoldItalic",
+    OpenSansItalic:"OpenSans-Italic",
+    OpenSansRegular:"OpenSans-Regular",
+    OpenSansMedium:"OpenSans-Medium",
+    OpenSansLight:"OpenSans-Light",
+
     }
 }

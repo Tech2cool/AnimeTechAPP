@@ -1,24 +1,27 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
-import React from 'react'
+import React, { memo } from 'react'
 
 import ThemeColors from '../Utils/ThemeColors'
 import { useLanguage } from '../Context/LanguageContext';
-import { filterNUE } from '../Utils/Functions';
+import { isValidData } from '../Utils/Functions';
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
-export default function AnimeCard({anime}) {
+const AnimeCard= memo(({anime}) =>{
   const{currentLang}=useLanguage();
 
   let AnimeTitle,status=anime?.AdditionalInfo?.status;
 
     if(currentLang === "en"){
-        AnimeTitle= (filterNUE(anime?.animeTitle?.english) && anime?.animeTitle?.english) || (anime?.animeTitle?.english_jp)
+        AnimeTitle= (isValidData(anime?.animeTitle?.english) && anime?.animeTitle?.english) || (anime?.animeTitle?.english_jp)
     }else{
         AnimeTitle= (anime?.animeTitle?.english_jp) || (anime?.animeTitle?.japanese)
     }
-
-    if(anime?.AdditionalInfo?.status === "current"){
-        status ="ongoing"
+    if(isValidData(anime?.status)){
+        status= anime?.status
+    }else{
+        if(anime?.AdditionalInfo?.status === "current"){
+            status ="ongoing"
+        }
     }
 
   return (
@@ -27,24 +30,24 @@ export default function AnimeCard({anime}) {
         <View style={styles.Info}>
             <Text numberOfLines={4} style={styles.Title}>{AnimeTitle}</Text>
             <View style={{flexDirection:"row",alignItems:'center', columnGap:8}}>
-            {filterNUE(anime?.episodeNum) && <Text style={styles.Episode}>Episode {anime?.episodeNum}</Text> }
+            {isValidData(anime?.episodeNum) && <Text style={styles.Episode}>Episode {anime?.episodeNum}</Text> }
 
-            {filterNUE(anime?.subOrDub) && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>({anime?.subOrDub})</Text> }
+            {isValidData(anime?.subOrDub) && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>({anime?.subOrDub})</Text> }
 
             </View>
-            {filterNUE(anime?.year) && <Text style={styles.Episode}>Year: {
+            {isValidData(anime?.year) && <Text style={styles.Episode}>Year: {
             anime?.year !== 0?anime?.year
             :anime?.AdditionalInfo?.startDate?.split("-")[0]
             }</Text> }
-            {filterNUE(anime?.AdditionalInfo?.status) && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>Status: {status}</Text> }
+            {isValidData(anime?.AdditionalInfo?.status) && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>Status: {status}</Text> }
             {   
-                filterNUE(anime?.AdditionalInfo?.ageRatingGuide) &&
+                isValidData(anime?.AdditionalInfo?.ageRatingGuide) &&
                 <Text style={styles.Episode}>{anime?.AdditionalInfo?.ageRating+ " - " +anime?.AdditionalInfo?.ageRatingGuide }</Text>
             }
         </View>
       </View>
   )
-}
+})
 const styles = StyleSheet.create({
     container:{
         backgroundColor:color.DarkBackGround2,
@@ -101,3 +104,5 @@ const styles = StyleSheet.create({
     },
 
 })
+
+export default AnimeCard
