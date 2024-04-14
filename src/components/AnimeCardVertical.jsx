@@ -1,50 +1,83 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
-import React, { memo } from 'react'
+import React, { memo, useMemo } from 'react'
 import ThemeColors from '../Utils/ThemeColors'
 import { useLanguage } from '../Context/LanguageContext';
 import { isValidData } from '../Utils/Functions';
+import { dummy_image } from '../Utils/contstant';
 
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
-const AnimecardVertical= memo(({anime}) =>{
-  const{currentLang}=useLanguage();
+const AnimecardVertical= ({anime}) =>{
+    const{currentLang}=useLanguage();
 
-  let AnimeTitle,status=anime?.AdditionalInfo?.status;
-    
-    if(currentLang === "en"){
-        AnimeTitle= (isValidData(anime?.animeTitle?.english) && anime?.animeTitle?.english) || (anime?.animeTitle?.english_jp)
-    }else{
-        AnimeTitle= (anime?.animeTitle?.english_jp) || (anime?.animeTitle?.japanese)
-    }
-    if(isValidData(anime?.status)){
-        status= anime?.status
-    }else{
-        if(anime?.AdditionalInfo?.status === "current"){
-            status ="ongoing"
+    const AnimeTitle = useMemo(()=>{
+        if(currentLang === "en"){
+            if(isValidData(anime?.animeTitle?.english)){
+                return anime?.animeTitle?.english
+            }else if(isValidData(anime?.animeTitle?.english_jp)){
+                return anime?.animeTitle?.english_jp
+            }
+        }else{
+            if(isValidData(anime?.animeTitle?.english_jp)){
+                return anime?.animeTitle?.english_jp
+            }else if(isValidData(anime?.animeTitle?.japanese)){
+                return anime?.animeTitle?.japanese
+            }
         }
-    }
+    },[anime?.animeTitle,currentLang])
+
+    const status = useMemo(()=>{
+        if(isValidData(anime?.status)){
+            return anime?.status
+        }else{
+            if(anime?.AdditionalInfo?.status === "current"){
+                return "ongoing"
+            }else {
+                return anime?.AdditionalInfo?.status
+            }
+        }
+    },[anime?.status, anime?.AdditionalInfo?.status])
+
+    const StatusComponent = useMemo(()=>{
+        if(isValidData(status)){
+            return <Text style={[styles.status]}>Status: {status}</Text>
+        }
+    },[anime?.status, anime?.AdditionalInfo?.status])
+
+    const SubDubComponent = useMemo(()=>{
+        if(isValidData(anime?.subOrDub)){
+            return <Text style={[styles.Episode,{textTransform:"capitalize",}] }>({anime?.subOrDub})</Text>
+        }
+    },[anime?.subOrDub])
+
+    const EpisodeNumberComponent = useMemo(()=>{
+        if(isValidData(anime?.episodeNum)){
+            return <Text style={styles.Episode}>Episode {anime?.episodeNum}</Text>
+        }
+    },[anime?.episodeNum])
+
+    const PosterComponent = useMemo(()=>{
+        if(isValidData(anime?.animeImg)){
+            return <Image style={styles.Img} source={{uri:anime?.animeImg}}/>
+        }else{
+            return <Image style={styles.Img} source={{uri:dummy_image}}/>
+        }
+    },[anime?.animeImg])
 
   return (
       <View style={styles.container}>
-        {
-            isValidData(anime?.animeImg)?
-            <Image style={styles.Img} source={{uri:anime?.animeImg}}/>
-            :<Image style={styles.Img} source={require("../assets/images/no-poster.png")}/>
-        }
+            {PosterComponent}
         <View style={styles.Info}>
             <Text numberOfLines={2} style={styles.Title}>{AnimeTitle}</Text>
             <View style={{flexDirection:"row",alignItems:'center', columnGap:8}}>
-            {isValidData(anime?.episodeNum) && <Text style={styles.Episode}>Episode {anime?.episodeNum}</Text> }
-
-            {isValidData(anime?.subOrDub) && <Text style={[styles.Episode,{textTransform:"capitalize",}] }>({anime?.subOrDub})</Text> }
-
+            {EpisodeNumberComponent}
+            {SubDubComponent}
             </View>
-
-            {isValidData(status) && <Text style={[styles.status]}>Status: {status}</Text> }
+            {StatusComponent}
         </View>
       </View>
   )
-})
+}
 const styles = StyleSheet.create({
     container:{
         width:145,
@@ -105,4 +138,4 @@ const styles = StyleSheet.create({
     },
 
 })
-export default AnimecardVertical
+export default memo(AnimecardVertical)

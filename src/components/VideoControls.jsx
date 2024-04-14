@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     top: 50,
     maxWidth: 200,
     maxHeight: 140,
-    zIndex: zIndex.TOP + 1,
+    zIndex: zIndex.TOP + 2,
   },
   settingOvarlayFullscreen: {
     position: "absolute",
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     top: 50,
     maxWidth: 300,
     maxHeight: 300,
-    zIndex: zIndex.TOP + 1,
+    zIndex: zIndex.TOP + 2,
     // backgroundColor:"blue",
   },
 

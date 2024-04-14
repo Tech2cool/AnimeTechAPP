@@ -5,6 +5,7 @@ import { LanguageProvider } from './Context/LanguageContext';
 import AppNavigator from './Navigation/AppNavigator';
 import { ThemeColors } from './Utils';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { InternetProvider } from './Context/InternetContext';
 
 const color = ThemeColors.DARK
 function App() {
@@ -12,11 +13,13 @@ function App() {
     <GestureHandlerRootView style={{flex:1}}>
     <View style={styles.container}>
       <SafeAreaView style={styles.container}>
+        <InternetProvider>
         <LanguageProvider>
           <VideoPlayerProvider>
             <AppNavigator />
           </VideoPlayerProvider>
         </LanguageProvider>
+        </InternetProvider>
       </SafeAreaView>
     </View>
     </GestureHandlerRootView>

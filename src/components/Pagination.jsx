@@ -12,24 +12,26 @@ const Pagination = ({ myPage, setMyPage, fetchAnime, title = "", search = false 
           return pg
         }
       })
+      
       // console.log(nextPage-1)
       if (search) {
-        fetchAnime(title, nextPage - 1)
-        setMyPage(prev => ({ ...prev, currentPage: nextPage - 1 }))
+        fetchAnime(title, parseInt(nextPage) - 1)
+        setMyPage(prev => ({ ...prev, currentPage: parseInt(nextPage) - 1 }))
       } else {
-        fetchAnime(nextPage - 1)
-        setMyPage(prev => ({ ...prev, currentPage: nextPage - 1 }))
+        fetchAnime(parseInt(nextPage) - 1)
+        setMyPage(prev => ({ ...prev, currentPage: parseInt(nextPage) - 1 }))
       }
-
+      
     } else {
-      if (page > myPage.totalPage || page < 1) return;
+      if (parseInt(page) > parseInt(myPage.totalPage) || parseInt(page) < 1) return;
       // fetchAnime(page)
       if (search) {
-        fetchAnime(title, page)
-        setMyPage(prev => ({ ...prev, currentPage: page, }))
+        fetchAnime(title, parseInt(page))
+        console.log(page)
+        setMyPage(prev => ({ ...prev, currentPage: parseInt(page)}))
       } else {
-        fetchAnime(page)
-        setMyPage(prev => ({ ...prev, currentPage: page, }))
+        fetchAnime(parseInt(page))
+        setMyPage(prev => ({ ...prev, currentPage: parseInt(page)}))
       }
     }
   }

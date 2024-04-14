@@ -4,7 +4,8 @@ import ThemeColors from '../Utils/ThemeColors';
 const color = ThemeColors.DARK;
 const clr_code = [color.AccentBlue, color.Orange, color.AccentGreen, color.Cyan, color.Red]
 
-const MyGenrecard = memo(({Title}) => {
+const MyGenrecard = ({Title}) => {
+  // console.log("genreCard Rendered")
   return (
     <View style={{
         borderColor:clr_code[Math.floor(Math.random() * 5)], 
@@ -18,6 +19,6 @@ const MyGenrecard = memo(({Title}) => {
         <Text style={{color:color.White}}>{Title}</Text>
       </View>
     )
-})
+}
 
-export default MyGenrecard
+export default memo(MyGenrecard)

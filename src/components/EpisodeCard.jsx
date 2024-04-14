@@ -4,47 +4,83 @@ import React, { memo, useMemo } from 'react'
 import ThemeColors from '../Utils/ThemeColors'
 import { useLanguage } from '../Context/LanguageContext';
 import { isValidData } from '../Utils/Functions';
+import { dummy_image } from '../Utils/contstant';
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
-
-const EpisodeCard  = memo(({episode, anime, currentEpisode}) =>{
+// let count = 1
+const EpisodeCard  = ({episode, anime, currentEpisode}) =>{
   const{currentLang}=useLanguage();
-    // console.log(currentEpisode)
-  let AnimeTitle,status;
-  
-    if(currentLang === "en"){
-        AnimeTitle= (episode?.title?.english) || (episode?.title?.english_jp)
-        // console.log(episode?.animeTitle)
-    }else{
-        AnimeTitle= (episode?.title?.english_jp) || (episode?.title?.japanese)
-        // console.log(episode?.animeTitle?.english_jp)
-    }
-    if(episode?.AdditionalInfo?.status === "current"){
-        status ="ongoing"
-    }else{
-        status = episode?.AdditionalInfo?.status
-    }
-    let Poster=anime?.animeImg;
-    if(isValidData(episode?.thumbnail)){
-        Poster= episode?.thumbnail
-        // console.log(episode.thumbnail)
-    }
-
-  return (
-      <View style={parseInt(currentEpisode) === episode?.number? styles.containerActive:styles.container}>
-        
-        <Image style={styles.Img} source={{uri:Poster}}/>
-        <View style={styles.Info}>
-            {
-                isValidData(AnimeTitle) && <Text style={parseInt(currentEpisode) === episode?.number? styles.TitleActive:styles.Title}>{AnimeTitle}</Text>
+    // console.log("episode card rendered" +count)
+    // count++
+    const AnimeTitle = useMemo(()=>{
+        if(currentLang === "en"){
+            if(isValidData(episode?.title?.english)){
+                return episode?.title?.english
+            }else if(isValidData(episode?.title?.english_jp)){
+                return episode?.title?.english_jp
             }
-            <Text style={parseInt(currentEpisode) === episode?.number? styles.EpisodeActive:styles.Episode}>Episode {episode?.number}</Text>
-            <Text style={parseInt(currentEpisode) === episode?.number? styles.statusActive:styles.status}>{episode?.hasDub ===true? "dub": "sub"}</Text>
-            <Text style={parseInt(currentEpisode) === episode?.number? styles.EpisodeActive:styles.Episode}>{episode?.AdditionalInfo?.ageRatingGuide}</Text>
+        }else{
+            if(isValidData(episode?.title?.english_jp)){
+                return episode?.title?.english_jp
+            }else if(isValidData(episode?.title?.japanese)){
+                return episode?.title?.japanese
+            }
+        }
+    },[episode?.title,currentEpisode])
+
+    const status = useMemo(()=>{
+        if(isValidData(episode?.AdditionalInfo?.status)){
+            if(episode?.AdditionalInfo?.status === "current"){
+                return "ongoing"
+            }else {
+                return episode?.AdditionalInfo?.status
+            }
+        }
+    },[episode?.AdditionalInfo?.status,currentEpisode])
+
+    const PosterComponent = useMemo(()=>{
+        if(isValidData(episode?.thumbnail)){
+           return episode?.thumbnail
+        }else if(isValidData(anime?.animeImg)){
+            return anime?.animeImg
+        }else{
+            return dummy_image
+        }
+    },[episode?.thumbnail, anime?.animeImg, currentEpisode])
+
+    const AnimeTitleComponent = useMemo(()=>{
+        return <Text numberOfLines={3} style={parseInt(currentEpisode) === episode?.number? styles.TitleActive:styles.Title}>{AnimeTitle}</Text>
+    },[episode?.title,currentEpisode])
+
+    const EpisodeNumberComponent = useMemo(()=>{
+        return <Text numberOfLines={2} style={parseInt(currentEpisode) === episode?.number? styles.EpisodeActive:styles.Episode}>Episode {episode?.number}</Text>
+    },[episode?.number,currentEpisode])
+
+    const HasDubComponent = useMemo(()=>{
+        return <Text style={parseInt(currentEpisode) === episode?.number? styles.statusActive:styles.status}>{episode?.hasDub ===true? "dub": "sub"}</Text>
+    },[episode?.hasDub,currentEpisode])
+
+    const AgeRatingComponent = useMemo(()=>{
+        return <Text 
+        style={
+            parseInt(currentEpisode) === episode?.number ?
+            styles.EpisodeActive:styles.Episode}>
+            {episode?.AdditionalInfo?.ageRatingGuide}</Text>
+    },[episode?.AdditionalInfo?.ageRatingGuide,currentEpisode])
+     
+    return(
+        <View style={parseInt(currentEpisode) === episode?.number? styles.containerActive:styles.container}>
+            {/* {PosterComponent} */}
+            <Image style={styles.Img} source={{uri:PosterComponent}}/>
+        <View style={styles.Info}>
+            {AnimeTitleComponent}
+            {EpisodeNumberComponent}
+            {HasDubComponent}
+            {AgeRatingComponent}
         </View>
       </View>
-  )
-})
+    )
+}
 const styles = StyleSheet.create({
     container:{
         backgroundColor:color.DarkBackGround2,
@@ -84,50 +120,50 @@ const styles = StyleSheet.create({
         gap:4,
     },
     Title:{
-        fontSize:14,
+        fontSize:12,
         textTransform:"capitalize",
-        fontWeight:"600",
+        // fontWeight:"600",
         color:color.White,
         // paddingVertical:4,
-        fontFamily:font.InterBlack,
+        fontFamily:font.OpenSansBold,
     },
     TitleActive:{
-        fontSize:14,
+        fontSize:12,
         textTransform:"capitalize",
-        fontWeight:"600",
+        // fontWeight:"600",
         color:color.White,
         // paddingVertical:4,
-        fontFamily:font.InterBlack,
+        fontFamily:font.OpenSansBold,
     },
     Episode:{
         color:color.LightGray,
         // fontWeight:"600",
-        fontSize:16,
-        fontFamily:font.InterMedium,
+        fontSize:14,
+        fontFamily:font.OpenSansMedium,
 
     },
     EpisodeActive:{
         color:color.White,
         // fontWeight:"600",
-        fontSize:16,
-        fontFamily:font.InterMedium,
+        fontSize:14,
+        fontFamily:font.OpenSansMedium,
 
     },
     status:{
         color:color.LightGray,
         textTransform:"capitalize",
         // fontWeight:"600",
-        fontSize:16,
-        fontFamily:font.PoppinsMedium,
+        fontSize:14,
+        fontFamily:font.OpenSansMedium,
     },
     statusActive:{
         color:color.White,
         textTransform:"capitalize",
         // fontWeight:"600",
-        fontSize:16,
-        fontFamily:font.PoppinsMedium,
+        fontSize:14,
+        fontFamily:font.OpenSansMedium,
     },
 
 })
 
-export default EpisodeCard
+export default memo(EpisodeCard)

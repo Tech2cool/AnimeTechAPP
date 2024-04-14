@@ -12,7 +12,7 @@ export default{
         Orange:"#ff7b00",
         AccentBlue:"#3498db",
         AccentGreen: "#2ecc71",        
-        Red: "#e74c3c",        
+        Red: "red",        
         Yellow: "#f39c12",        
         Cyan:"#00bcd4",
         LighterGray2: "#555555"

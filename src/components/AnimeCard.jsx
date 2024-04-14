@@ -1,66 +1,108 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
-import React, { memo } from 'react'
+import React, { memo, useMemo } from 'react'
 
 import ThemeColors from '../Utils/ThemeColors'
 import { useLanguage } from '../Context/LanguageContext';
 import { isValidData } from '../Utils/Functions';
+import { dummy_image } from '../Utils/contstant';
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
 const AnimeCard= memo(({anime}) =>{
-  const{currentLang}=useLanguage();
-
-  let AnimeTitle,status=anime?.AdditionalInfo?.status;
-
-    if(currentLang === "en"){
-        AnimeTitle= (isValidData(anime?.animeTitle?.english) && anime?.animeTitle?.english) || (anime?.animeTitle?.english_jp)
-    }else{
-        AnimeTitle= (anime?.animeTitle?.english_jp) || (anime?.animeTitle?.japanese)
-    }
-    if(isValidData(anime?.status)){
-        status= anime?.status
-    }else{
-        if(anime?.AdditionalInfo?.status === "current"){
-            status ="ongoing"
+    const{currentLang}=useLanguage();
+    const AnimeTitle = useMemo(()=>{
+        if(currentLang === "en"){
+            if(isValidData(anime?.animeTitle?.english)){
+                return anime?.animeTitle?.english
+            }else if(isValidData(anime?.animeTitle?.english_jp)){
+                return anime?.animeTitle?.english_jp
+            }
+        }else{
+            if(isValidData(anime?.animeTitle?.english_jp)){
+                return anime?.animeTitle?.english_jp
+            }else if(isValidData(anime?.animeTitle?.japanese)){
+                return anime?.animeTitle?.japanese
+            }
         }
-    }
+    },[anime?.animeTitle, currentLang])
 
+    const status = useMemo(()=>{
+        if(isValidData(anime?.status)){
+            return anime?.status
+        }else{
+            if(anime?.AdditionalInfo?.status === "current"){
+                return "ongoing"
+            }else {
+                return anime?.AdditionalInfo?.status
+            }
+        }
+    },[anime?.status, anime?.AdditionalInfo?.status])
+
+    const StatusComponent = useMemo(()=>{
+        if(isValidData(status)){
+            return <Text style={[styles.status]}>Status: {status}</Text>
+        }
+    },[anime?.status, anime?.AdditionalInfo?.status])
+    
+    const SubDubComponent = useMemo(()=>{
+        if(isValidData(anime?.subOrDub)){
+            return <Text style={[styles.Episode,{textTransform:"capitalize",}] }>{anime?.subOrDub}</Text>
+        }
+    },[anime?.subOrDub])
+
+    const EpisodeNumberComponent = useMemo(()=>{
+        if(isValidData(anime?.episodeNum)){
+            return <Text style={styles.Episode}>Episode {anime?.episodeNum}</Text>
+        }
+    },[anime?.episodeNum])
+
+    const PosterComponent = useMemo(()=>{
+        if(isValidData(anime?.animeImg)){
+            return <Image style={styles.Img} source={{uri:anime?.animeImg}}/>
+        }else{
+            return <Image style={styles.Img} source={{uri:dummy_image}}/>
+        }
+    },[anime?.animeImg])
+
+    const YearComponent = useMemo(()=>{
+        if(isValidData(anime?.year) && anime?.year !== 0){
+            return <Text style={styles.Episode}>Year: {anime?.year}</Text>
+        }else if(isValidData(anime?.AdditionalInfo?.startDate) ){
+            return <Text style={styles.Episode}>Year: {anime?.AdditionalInfo?.startDate?.split("-")[0]}</Text>
+        }
+    },[anime?.year,anime?.AdditionalInfo?.startDate])
+
+    const AgeRatingComponent = useMemo(()=>{
+        if(isValidData(anime?.AdditionalInfo?.ageRatingGuide)){
+            return <Text style={styles.Episode}>{anime?.AdditionalInfo?.ageRating+ " - " +anime?.AdditionalInfo?.ageRatingGuide }</Text>
+        }
+    },[anime?.AdditionalInfo?.ageRatingGuide, anime?.AdditionalInfo?.ageRating])
   return (
       <View style={styles.container}>
-        <Image style={styles.Img} source={{uri:anime?.animeImg}}/>
+            {PosterComponent}
         <View style={styles.Info}>
             <Text numberOfLines={4} style={styles.Title}>{AnimeTitle}</Text>
             <View style={{flexDirection:"row",alignItems:'center', columnGap:8}}>
-            {isValidData(anime?.episodeNum) && <Text style={styles.Episode}>Episode {anime?.episodeNum}</Text> }
-
-            {isValidData(anime?.subOrDub) && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>({anime?.subOrDub})</Text> }
-
+            {EpisodeNumberComponent}
+            {SubDubComponent}
             </View>
-            {isValidData(anime?.year) && <Text style={styles.Episode}>Year: {
-            anime?.year !== 0?anime?.year
-            :anime?.AdditionalInfo?.startDate?.split("-")[0]
-            }</Text> }
-            {isValidData(anime?.AdditionalInfo?.status) && <Text style={[styles.Episode,{textTransform:"capitalize"}] }>Status: {status}</Text> }
-            {   
-                isValidData(anime?.AdditionalInfo?.ageRatingGuide) &&
-                <Text style={styles.Episode}>{anime?.AdditionalInfo?.ageRating+ " - " +anime?.AdditionalInfo?.ageRatingGuide }</Text>
-            }
+            {YearComponent}
+            {StatusComponent}
+            {AgeRatingComponent}
         </View>
       </View>
   )
 })
 const styles = StyleSheet.create({
     container:{
-        backgroundColor:color.DarkBackGround2,
+        backgroundColor:color.DarkBackGround,
         borderRadius:10,
+        borderColor:color.LighterGray,
+        borderWidth:1,
         overflow:"hidden",
         height:135,
         flexDirection:'row',
-        shadowColor: color.White,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.4,
-        shadowRadius: 2,
         elevation: 2,
-        marginVertical:5,
+        margin:5
     },
     Poster:{
         flex:1,

@@ -5,11 +5,15 @@ import {fetchAnimeMovies, setPagesArray } from '../../Utils/Functions';
 import {Pagination, AnimeCard} from '../../components';
 import { MoviesSort } from "../../Utils/contstant"
 import {ThemeColors, IIcon} from '../../Utils';
+import { useVideoPlayer } from '../../Context/VideoPlayerContext';
+import { useInternet } from '../../Context/InternetContext';
 
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
 export default function MovieScreen({ navigation }) {
 
+  const {setVideoState}=useVideoPlayer()
+  const {isOnline} =useInternet()
   const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState("");
@@ -21,15 +25,25 @@ export default function MovieScreen({ navigation }) {
     availPages: [],
   });
 
-
+  if(!isOnline){
+    return navigation.navigate("Downloads")
+  }
   useEffect(() => {
-    memoizedAnimes(selected, 1)
+    if(!isOnline){
+      navigation.navigate("Downloads")
+    }else{
+      memoizedAnimes(selected, 1)
+    }
   }, [selected]);
 
   useEffect(() => {
     setMyPage(prev => ({
       ...prev,
       currentPage: 1,
+    }))
+    setVideoState(prev=>({
+      ...prev,
+      isVideoScreen:false,
     }))
   }, [])
 
@@ -54,8 +68,13 @@ export default function MovieScreen({ navigation }) {
   }, [selected]);
 
   const onRefresh = useCallback(() => {
+    if(!isOnline) return
     setRefreshing(true);
     memoizedAnimes(selected, 1);
+    setVideoState(prev=>({
+      ...prev,
+      isVideoScreen:false,
+    }))
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);

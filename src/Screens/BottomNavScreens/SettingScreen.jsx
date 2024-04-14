@@ -54,6 +54,42 @@ export default function SettingScreen({navigation}) {
             // onPress={() => navigation.goBack()}
           /> 
       </TouchableOpacity>
+      <TouchableOpacity style={styles.List} onPress={()=>{ navigation.navigate("Popular")}}>
+        <Text style={styles.ListText} >Popular Anime</Text>
+          <MIcon 
+            name={"keyboard-arrow-right"} 
+            size={25} 
+            color={color.Orange}
+            // onPress={() => navigation.goBack()}
+          /> 
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.List} onPress={()=>{ navigation.navigate("WeekSchedule")}}>
+        <Text style={styles.ListText} >Anime Schedule</Text>
+          <MIcon 
+            name={"keyboard-arrow-right"} 
+            size={25} 
+            color={color.Orange}
+            // onPress={() => navigation.goBack()}
+          /> 
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.List} onPress={()=>{ navigation.navigate("Downloads")}}>
+        <Text style={styles.ListText} >My Download</Text>
+          <MIcon 
+            name={"keyboard-arrow-right"} 
+            size={25} 
+            color={color.Orange}
+            // onPress={() => navigation.goBack()}
+          /> 
+      </TouchableOpacity>
+      {/* <TouchableOpacity style={styles.List} onPress={()=>{ navigation.navigate("SetLinks")}}>
+        <Text style={styles.ListText} >SetLinks</Text>
+          <MIcon 
+            name={"keyboard-arrow-right"} 
+            size={25} 
+            color={color.Orange}
+            // onPress={() => navigation.goBack()}
+          /> 
+      </TouchableOpacity> */}
     </View>
   )
 }

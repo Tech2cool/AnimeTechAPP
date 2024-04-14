@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Switch,TouchableOpacity, Animated,TouchableWithoutFeedback } from 'react-native';
+import React, { memo } from 'react';
+import { View, Text, StyleSheet, Switch,TouchableOpacity, Animated,TouchableWithoutFeedback, Image } from 'react-native';
 import ThemeColors from '../../Utils/ThemeColors';
 import { useLanguage } from '../../Context/LanguageContext';
 
@@ -7,11 +7,15 @@ const color = ThemeColors.DARK;
 
 const HomeTopBar = () => {
   const{currentLang, toggleLanguage}=useLanguage();
-  
+  // console.log("topbar Renderd")
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-          <Text style={styles.title}>Anime<Text style={[styles.title, {color:color.Orange}]}>Tech</Text></Text>
+          <Image 
+            style={{width:50,height:50}}
+            source={require("../../assets/images/icon3.png")}
+          />
+          {/* <Text style={styles.title}>Anime<Text style={[styles.title, {color:color.Orange}]}>Tech</Text></Text> */}
 
         <TouchableWithoutFeedback
         onPress={toggleLanguage}
@@ -33,8 +37,9 @@ const HomeTopBar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 50, // Adjust this value based on your device's status bar height
+    // flex: 1,
+    // paddingTop: 50, // Adjust this value based on your device's status bar height
+
 },
   topBar: {
     position: 'absolute',
@@ -42,12 +47,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 60,
-    backgroundColor: color.DarkBackGround,
+    backgroundColor: "rgba(0,0,0,0.1)",
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection:"row",
-    borderBottomColor:color.LighterGray2,
-    borderBottomWidth:1,
+    // borderBottomColor:color.LighterGray2,
+    // borderBottomWidth:1,
     paddingHorizontal:10,
     zIndex: 1, // Ensure the top bar is above other components
   },
@@ -61,19 +66,19 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     width:100,
     height:42,
-    backgroundColor:color.DarkBackGround,
+    backgroundColor:"rgba(0,0,0,0.3)",
     borderRadius:99,
     // padding:10,
     alignItems:"center",
     justifyContent:"space-around",
     overflow:"hidden",
     padding:2,
-    borderWidth:3,
-    borderColor:color.LighterGray,
+    // borderWidth:21,
+    // borderColor:color.LighterGray,
   },
   switchBtn:{
     overflow:"hidden",
-    backgroundColor:color.DarkBackGround,
+    // backgroundColor:color.DarkBackGround,
     flex:1,
     height:"100%",
     alignItems:"center",
@@ -104,4 +109,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomeTopBar;
+export default memo(HomeTopBar);

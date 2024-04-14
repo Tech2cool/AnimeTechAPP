@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, StatusBar, TouchableWithoutFeedback, Alert, ToastAndroid, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback, useMemo, forwardRef } from 'react'
 import Video from "react-native-video";
 import Orientation from 'react-native-orientation-locker';
 import { useNavigation } from '@react-navigation/native';
 import VideoControls from './VideoControls';
-import { getAsynStorageData, storeAsynStorageData } from '../Utils/Functions';
+import { getAsynStorageData, isValidData, storeAsynStorageData } from '../Utils/Functions';
 import { useVideoPlayer } from '../Context/VideoPlayerContext';
 import { Slider } from '@react-native-assets/slider'
 import ThemeColors from '../Utils/ThemeColors';
@@ -13,9 +13,9 @@ import { zIndex } from '../Utils/contstant';
 const color = ThemeColors.DARK
 let progressCount = 1;
 let lastPress = 0;
-export default function VideoPlayerr(props) {
+export default function VideoPlayerr(props){
   const {
-    vId = "__blank", 
+    vId = "__blank",
     pQualities = [],
     url = "__blank",
     goback,
@@ -26,53 +26,48 @@ export default function VideoPlayerr(props) {
   const navigation = useNavigation();
   const VideoRef = useRef(null)
   const RippleTimerRef = useRef(null)
-  const seekingTimerRef = useRef(null)
+  const seekingTimerRef = useRef(null)  
 
   const { isFullscreen, showControls, paused, showSettings,
     showQualitySetting, currentQuality, videoId,
     playbackSpeed, showPlaybackRateSetting, isBuffering, isVideoScreen } = videoState;
 
   function handleOrientation(orientation) {
-    orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
-      ? (
-        setVideoState(s => ({ ...s, isFullscreen: true })),
+    if (videoState.isVideoScreen) {
+      if (orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT') {
+        // setVideoState(s => ({ ...s, isFullscreen: true })),
         StatusBar.setHidden(true),
-        navigation.setOptions({ tabBarStyle: { display: "none" } }))
-      : (
-        setVideoState(s => ({ ...s, isFullscreen: false })),
+          navigation.setOptions({ tabBarStyle: { display: "none" } })
+      } else {
+        // setVideoState(s => ({ ...s, isFullscreen: false })),
         StatusBar.setHidden(false),
-        navigation.setOptions({ tabBarStyle: { display: undefined } })
-      );
-  }
-  function handleFullscreen() {
-    if (videoState.isFullscreen) {
-      if (isVideoScreen) {
-        Orientation.lockToPortrait()
-      } else {
-        Orientation.unlockAllOrientations();
-      }
-      // setTimeout(() => {
-      // }, 500);
-    } else {
-      if (isVideoScreen) {
-        Orientation.lockToLandscapeLeft();
-      } else {
-        Orientation.unlockAllOrientations();
+          navigation.setOptions({ tabBarStyle: { display: undefined } })
       }
     }
   }
+
+  function handleFullscreen() {
+    if (videoState.isFullscreen) {
+      setVideoState(s => ({ ...s, isFullscreen: false, isVideoScreen: true }))
+      Orientation.lockToPortrait()
+    } else {
+      setVideoState(s => ({ ...s, isFullscreen: true, isVideoScreen: true }))
+      Orientation.lockToLandscapeLeft();
+    }
+  }
+
   function handleProgress(data) {
     if (!paused && !videoState.isSeeking) {
       setVideoState(prev => ({
         ...prev,
         currentTime: data?.currentTime,
       }));
-      if (videoState.currentTime >= data.playableDuration && !isBuffering) {
+      if (videoState.currentTime >= data.playableDuration && !isBuffering && !videoState.offlineMode) {
         setVideoState(prev => ({
           ...prev,
           isBuffering: true,
         }));
-      } else if (data.playableDuration > videoState.currentTime && isBuffering) {
+      } else if (data.playableDuration > videoState.currentTime && isBuffering && !videoState.offlineMode) {
         setVideoState(prev => ({
           ...prev,
           isBuffering: false,
@@ -94,13 +89,14 @@ export default function VideoPlayerr(props) {
       storeAsynStorageData(videoId, JSON.stringify(data?.currentTime))
     }
   }
+
   function handleOnLoad(data) {
     // console.log(data)
     let customQuality = `${data?.naturalSize?.height}P`;
     // console.log("onload")
     // console.log(currentQuality.quality)
-    if (currentQuality.quality === "default" || currentQuality.quality === "backup") {
-      customQuality = currentQuality.quality;
+    if (currentQuality?.quality === "default" || currentQuality?.quality === "backup") {
+      customQuality = currentQuality?.quality;
       // console.log('default')
     }
 
@@ -112,10 +108,10 @@ export default function VideoPlayerr(props) {
           handleSeek(JSON.parse(res))
           setVideoState(prev => ({
             ...prev,
-            duration: data.duration,
+            duration: data?.duration,
             currentTime: JSON.parse(res),
             currentQuality: {
-              ...prev.currentQuality,
+              ...prev?.currentQuality,
               quality: customQuality,
             },
             isBuffering: false,
@@ -124,10 +120,10 @@ export default function VideoPlayerr(props) {
         } else {
           setVideoState(prev => ({
             ...prev,
-            duration: data.duration,
-            currentTime: data.currentTime,
+            duration: data?.duration,
+            currentTime: data?.currentTime,
             currentQuality: {
-              ...prev.currentQuality,
+              ...prev?.currentQuality,
               quality: customQuality,
             },
             isBuffering: false,
@@ -135,10 +131,14 @@ export default function VideoPlayerr(props) {
           // console.log("else")
 
         }
-      }).catch(err => console.log(err))
-    //console.log("pass 1")
+      }).catch(err => {
+        // console.log(err)
+        ToastAndroid.show(`Error: ${err}`, ToastAndroid.SHORT);
+      })
+    //console.log("pass 1")  
     // console.log("pass 2")
   }
+
   function handleOnEnd() {
     setVideoState(prev => ({
       ...prev,
@@ -146,21 +146,22 @@ export default function VideoPlayerr(props) {
       isBuffering: false,
     }));
   }
+  
   function handleSeek(value) {
-    VideoRef.current.seek(value);
-    setVideoState(prev=>(
-      { 
-        ...prev, 
-        currentTime: value, 
-        isSeeking: !videoState.isSeeking && true 
+    VideoRef?.current?.seek(value);
+    setVideoState(prev => (
+      {
+        ...prev,
+        currentTime: value,
+        isSeeking: !videoState.isSeeking && true
       }
     ));
 
     clearTimeout(seekingTimerRef.current)
-    seekingTimerRef.current= setTimeout(() => {
-      setVideoState(prev=>({
-          ...prev, 
-          isSeeking: false,
+    seekingTimerRef.current = setTimeout(() => {
+      setVideoState(prev => ({
+        ...prev,
+        isSeeking: false,
       }));
     }, 300);
   }
@@ -182,68 +183,68 @@ export default function VideoPlayerr(props) {
       // console.log('double press');
       setVideoState(prev => ({
         ...prev,
-        isDoubleTapActive:true,
-        
+        isDoubleTapActive: true,
+
       }))
 
-    } 
-      // console.log('single press');
-      lastPress=time
-      if(lastPress >0 && delta > DOUBLE_PRESS_DELAY){
-        setVideoState(prev => ({
-          ...prev,
-          showControls: !showControls,
-          showSettings: false,
-          showQualitySetting: false,
-          showPlaybackRateSetting: false,
-        }))
-      }
+    }
+    // console.log('single press');
+    lastPress = time
+    if (lastPress > 0 && delta > DOUBLE_PRESS_DELAY) {
+      setVideoState(prev => ({
+        ...prev,
+        showControls: !showControls,
+        showSettings: false,
+        showQualitySetting: false,
+        showPlaybackRateSetting: false,
+      }))
+    }
   }
-  function handleRippleLeft(){
+  function handleRippleLeft() {
     // console.log("rippleLeft")
-    
-    handleSeek(videoState.currentTime -10)
-    const seektime= videoState.totalSeekTime - 10
+
+    handleSeek(videoState.currentTime - 10)
+    const seektime = videoState.totalSeekTime - 10
 
     // if(!videoState.isSeekingLeft){
-      // console.log("set left true")
-      setVideoState(prev=>({
-        ...prev,
-        isSeekingLeft:true,
-        totalSeekTime:seektime
-      }))
+    // console.log("set left true")
+    setVideoState(prev => ({
+      ...prev,
+      isSeekingLeft: true,
+      totalSeekTime: seektime
+    }))
     // }
 
     clearTimeout(RippleTimerRef.current)
-    RippleTimerRef.current= setTimeout(() => {
-      setVideoState(prev=>({
+    RippleTimerRef.current = setTimeout(() => {
+      setVideoState(prev => ({
         ...prev,
-        isDoubleTapActive:false,
-        isSeekingLeft:false,
-        totalSeekTime:0,
+        isDoubleTapActive: false,
+        isSeekingLeft: false,
+        totalSeekTime: 0,
       }))
     }, 1000);
   }
-  function handleRippleRight(){
+  function handleRippleRight() {
     // console.log("rippleRight")
-    handleSeek(videoState.currentTime+10)
+    handleSeek(videoState.currentTime + 10)
     // if(!videoState.isSeekingRight){
-      const seektime= videoState.totalSeekTime + 10
-      // console.log("set right true")
-      setVideoState(prev=>({
-        ...prev,
-        isSeekingRight:true,
-        totalSeekTime:seektime
-      }))
+    const seektime = videoState.totalSeekTime + 10
+    // console.log("set right true")
+    setVideoState(prev => ({
+      ...prev,
+      isSeekingRight: true,
+      totalSeekTime: seektime
+    }))
     // }
 
     clearTimeout(RippleTimerRef.current)
-    RippleTimerRef.current= setTimeout(() => {
-      setVideoState(prev=>({
+    RippleTimerRef.current = setTimeout(() => {
+      setVideoState(prev => ({
         ...prev,
-        isDoubleTapActive:false,
-        isSeekingRight:false,
-        totalSeekTime:0,
+        isDoubleTapActive: false,
+        isSeekingRight: false,
+        totalSeekTime: 0,
       }))
     }, 1000);
   }
@@ -295,7 +296,7 @@ export default function VideoPlayerr(props) {
     setVideoState(prev => ({
       ...prev,
       currentQuality: {
-        ...prev.currentQuality,
+        ...prev?.currentQuality,
         url: value?.url,
         quality: customQuality,
       },
@@ -308,11 +309,7 @@ export default function VideoPlayerr(props) {
     }))
   }
   useEffect(() => {
-    //console.log(videoState.qualities)
-  }, [videoState.qualities])
-
-  useEffect(() => {
-    Orientation.addOrientationListener(handleOrientation);
+    // Orientation.addOrientationListener(handleOrientation);
 
     // Orientation.lockToLandscapeLeft();
     const vQuality = pQualities?.find(src => src?.url === url)
@@ -321,16 +318,16 @@ export default function VideoPlayerr(props) {
       qualities: pQualities,
       videoId: vId,
       currentQuality: {
-        ...prev.currentQuality,
+        ...prev?.currentQuality,
         url: url,
-        quality: vQuality.quality,
+        quality: vQuality?.quality,
       },
       isVideoScreen: true,
     }))
-    return () => {
-      Orientation.removeOrientationListener(handleOrientation);
-    };
-  }, []);
+    // return () => {
+    //   Orientation.removeOrientationListener(handleOrientation);
+    // };
+  }, [pQualities, vId, url]);
 
   const handlegoBack = () => {
     if (goback) {
@@ -342,8 +339,7 @@ export default function VideoPlayerr(props) {
       navigation.goBack()
     }
   }
-
-  return videoState.currentQuality.url !== "" && (
+  return isValidData(videoState?.currentQuality?.url) && (
     <View style={isFullscreen ? styles.container : styles.container_noFlex}>
       <TouchableWithoutFeedback
         onPress={handleControls}
@@ -353,7 +349,7 @@ export default function VideoPlayerr(props) {
             ref={VideoRef}
             fullscreen={isFullscreen}
             style={isFullscreen ? styles.fullscreenVideo : styles.video}
-            source={{ uri: currentQuality?.url }}
+            source={{ uri: videoState?.currentQuality?.url }}
             resizeMode={videoState.videoResizeMode}
             onLoad={handleOnLoad}
             // onLoadStart={handlePlaybackStatusUpdate}
@@ -361,54 +357,47 @@ export default function VideoPlayerr(props) {
             onProgress={handleProgress}
             paused={paused}
             rate={playbackSpeed}
-          // onBuffer={handleBuffer}
-          // onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
           />
-          {/* { */}
-            {/* // showControls ? ( */}
-              <View style={styles.controlOverlay}>
-                <VideoControls
-                  videoState={videoState}
-                  setVideoState={setVideoState}
-                  handleFullscreen={handleFullscreen}
-                  handleSeek={handleSeek}
-                  getMinutesFromSeconds={getMinutesFromSeconds}
-                  handleSetting={handleSetting}
-                  handlePlayPause={handlePlayPause}
-                  handleQualitySetting={handleQualitySetting}
-                  playbackRates={playbackRates}
-                  handlePlaybackRateSetting={handlePlaybackRateSetting}
-                  handlePlaybackSpeed={handlePlaybackSpeed}
-                  handleSetQuality={handleSetQuality}
-                  handleResizeSetting={handleResizeSetting}
-                  handlegoBack={handlegoBack}
-                  handleRippleRight={handleRippleRight}
-                  handleRippleLeft={handleRippleLeft}
+          <View style={styles.controlOverlay}>
+            <VideoControls
+              videoState={videoState}
+              setVideoState={setVideoState}
+              handleFullscreen={handleFullscreen}
+              handleSeek={handleSeek}
+              getMinutesFromSeconds={getMinutesFromSeconds}
+              handleSetting={handleSetting}
+              handlePlayPause={handlePlayPause}
+              handleQualitySetting={handleQualitySetting}
+              playbackRates={playbackRates}
+              handlePlaybackRateSetting={handlePlaybackRateSetting}
+              handlePlaybackSpeed={handlePlaybackSpeed}
+              handleSetQuality={handleSetQuality}
+              handleResizeSetting={handleResizeSetting}
+              handlegoBack={handlegoBack}
+              handleRippleRight={handleRippleRight}
+              handleRippleLeft={handleRippleLeft}
+            />
+          </View>
+          {
+            !isFullscreen && !showControls && (
+              <View style={styles.controlOverlay2}>
+                <Slider
+                  value={videoState.currentTime}
+                  // value={50}
+                  minimumValue={0}                  // Minimum value
+                  maximumValue={videoState.duration} // Maximum value
+                  thumbTintColor={color.Red}
+                  thumbSize={3}
+                  // onValueChange={handleSeek}
+                  slideOnTap={false}
+                  trackHeight={3}
+                  step={1}
+                  minimumTrackTintColor={color.Red}
+                // minimumTrackTintColor={"#008cff"}
                 />
               </View>
-            {/* // ) : ( */}
-            {
-              !isFullscreen && !showControls &&(
-                <View style={styles.controlOverlay2}>
-                  <Slider
-                    value={videoState.currentTime}
-                    // value={50}
-                    minimumValue={0}                  // Minimum value
-                    maximumValue={videoState.duration} // Maximum value
-                    thumbTintColor={color.Red}
-                    thumbSize={3}
-                    // onValueChange={handleSeek}
-                    slideOnTap={false}
-                    trackHeight={3}
-                    step={1}
-                    minimumTrackTintColor={color.Red}
-                  // minimumTrackTintColor={"#008cff"}
-                  />
-                </View>
-              )
-            }
-            {/* // ) */}
-          {/*  } */}
+            )
+          }
           {isBuffering && (
             <ActivityIndicator style={{ position: "absolute", top: "40%", left: "45%", zIndex: zIndex.CENTER, }} color="white" size="large" />
           )}
@@ -457,7 +446,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#000000c4',
     justifyContent: 'space-between',
     // paddingHorizontal:10,
-    zIndex: zIndex.TOP,
+    zIndex: zIndex.TOP+1,
     // opacity:0
   },
   controlOverlay2: {

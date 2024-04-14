@@ -1,5 +1,5 @@
 import { View, StatusBar } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native';
 import {ThemeColors} from '../Utils';
@@ -7,11 +7,15 @@ import Testing from '../Screens/StackScreens/Testing';
 import SetLinks from '../Screens/StackScreens/SetLinks';
 import {Splash, HomeScreen, VideoScreen, AnimeInfoScreen, 
         WatchListScreen, GenreScreen, MovieScreen, TopAiringScreen} from "../Screens/StackScreens"
-// import HomeScreen2 from '../Screens/BottomNavScreens/HomeScreen2';
 import Recent from '../Screens/StackScreens/Recent';
+import WeekSchedule from '../Screens/StackScreens/WeekSchedule';
+import PopularScreen from '../Screens/BottomNavScreens/PopularScreen';
+import DownloadedAnime from '../Screens/StackScreens/DownloadedAnime';
+import OfflineVideoScreen from '../Screens/StackScreens/OffliceVideoScreen';
 const Stack = createStackNavigator();
 const color = ThemeColors.DARK
 const AppNavigator = () => {
+
     return (
     <NavigationContainer>
       <View style={{backgroundColor:"black", flex:1}}>
@@ -39,6 +43,11 @@ const AppNavigator = () => {
           <Stack.Screen 
                 name="Video" 
                 component={VideoScreen}
+                options={{headerShown: false}}
+            />
+          <Stack.Screen 
+                name="OfflineVideo" 
+                component={OfflineVideoScreen}
                 options={{headerShown: false}}
             />
           <Stack.Screen 
@@ -79,6 +88,33 @@ const AppNavigator = () => {
                 name="SetLinks" 
                 component={SetLinks}
                 options={{headerShown: false}}
+            />
+          <Stack.Screen 
+                name="WeekSchedule" 
+                component={WeekSchedule}
+                options={{headerShown: true,
+                  headerTintColor:color.White,
+                  headerStyle:{
+                  backgroundColor:color.DarkBackGround,
+                }}}
+            />
+          <Stack.Screen 
+                name="Popular" 
+                component={PopularScreen}
+                options={{headerShown: true,
+                  headerTintColor:color.White,
+                  headerStyle:{
+                  backgroundColor:color.DarkBackGround,
+                }}}
+            />
+          <Stack.Screen 
+                name="Downloads" 
+                component={DownloadedAnime}
+                options={{headerShown: true,
+                  headerTintColor:color.White,
+                  headerStyle:{
+                  backgroundColor:color.DarkBackGround,
+                }}}
             />
         </Stack.Navigator>
       </View>

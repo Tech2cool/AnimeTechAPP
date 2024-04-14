@@ -115,12 +115,34 @@ const MoviesSort = [
     { name:"y", value: "y" },
     { name:"z", value: "z" }
 ]
-
+const filterListItem = [
+    {
+      name:"all",
+      value:"all",
+    },
+    {
+      name:"year-ascending",
+      value:"year-asc",
+    },
+    {
+      name:"year-descending",
+      value:"year-desc",
+    },
+    {
+      name:"ongoing",
+      value:"ongoing",
+    },
+    {
+      name:"completed",
+      value:"completed",
+    },
+  ]
+  
 const zIndex ={
     HIGH: 11,
     TOP: 10,
     CENTER: 9,
     BELOW: 8,
 }
-
-export {Genres,MoviesSort,zIndex}
+const dummy_image ="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+export {Genres,MoviesSort,zIndex,dummy_image,filterListItem}

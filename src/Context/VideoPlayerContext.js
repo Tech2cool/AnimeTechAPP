@@ -21,6 +21,7 @@ export const VideoPlayerProvider = ({ children }) => {
         isSeeking:false,
         isSeekingLeft:false,
         isSeekingRight:false,
+        offlineMode:false,
         totalSeekTime:0,
         showPlaybackRateSetting:false,
         videoResizeMode:"contain",

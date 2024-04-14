@@ -5,10 +5,14 @@ import SelectDropdown from 'react-native-select-dropdown'
 import {Pagination, AnimeCard} from '../../components';
 import {ThemeColors, IIcon} from '../../Utils';
 import { Genres } from "../../Utils/contstant"
+import { useVideoPlayer } from '../../Context/VideoPlayerContext';
+import { useInternet } from '../../Context/InternetContext';
 
 const color = ThemeColors.DARK;
 const font = ThemeColors.FONT;
 export default function GenreScreen({ navigation }) {
+  const {setVideoState}=useVideoPlayer()
+  const {isOnline} =useInternet()
 
   const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,17 +24,27 @@ export default function GenreScreen({ navigation }) {
     totalPage: 1,
     availPages: [],
   });
-
+  if(!isOnline){
+    return navigation.navigate("Downloads")
+  }
   let content;
 
   useEffect(() => {
-    memoizedAnimes(selected, 1)
+    if(!isOnline){
+      navigation.navigate("Downloads")
+    }else{
+      memoizedAnimes(selected, 1)
+    }
   }, [selected]);
   
   useEffect(() => {
     setMyPage(prev => ({
       ...prev,
       currentPage: 1,
+    }))
+    setVideoState(prev=>({
+      ...prev,
+      isVideoScreen:false,
     }))
   }, [])
 
@@ -57,8 +71,13 @@ export default function GenreScreen({ navigation }) {
   }, [selected]);
 
   const onRefresh = useCallback(() => {
+    if(!isOnline)return
     setRefreshing(true);
     memoizedAnimes(selected, 1);
+    setVideoState(prev=>({
+      ...prev,
+      isVideoScreen:false,
+    }))
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
